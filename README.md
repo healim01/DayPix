@@ -1,4 +1,4 @@
-# days_snap
+# daypix
 
 A new Flutter project.
 
