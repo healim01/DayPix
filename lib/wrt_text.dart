@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:daypix/detail.dart';
-import 'package:daypix/location.dart';
+// import 'package:daypix/location.dart';
 
 var isText = 0;
 String emoji = "";
