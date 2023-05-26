@@ -9,7 +9,7 @@ class DayPixApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'DayPix',
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
         // '/login': (BuildContext context) => const LoginPage(),
         '/': (BuildContext context) => const HomePage(),
