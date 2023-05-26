@@ -1,3 +1,4 @@
+import 'package:daypix/wrt_pic.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -7,9 +8,20 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("DayPix"),
+        title: const Text("DayPix"),
       ),
-      body: Placeholder(),
+      body: Column(
+        children: [
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WrtPicPage()),
+                );
+              },
+              child: const Text("Writing Pic Page"))
+        ],
+      ),
     );
   }
 }
