@@ -47,7 +47,9 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 print(_textController.text);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DetailPage()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DetailPage(docID: widget.docID, img: widget.img)),
                 );
               },
               style: TextButton.styleFrom(

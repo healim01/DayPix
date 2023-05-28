@@ -148,7 +148,6 @@ class _WrtPicPageState extends State<WrtPicPage> {
               children: [
                 TextButton(
                     onPressed: () {
-                      print(imgURL);
                       final user = FirebaseAuth.instance.currentUser;
 
                       FirebaseFirestore.instance
