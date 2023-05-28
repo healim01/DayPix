@@ -1,4 +1,4 @@
-# daypix
+# DayPix
 
 A new Flutter project.
 
