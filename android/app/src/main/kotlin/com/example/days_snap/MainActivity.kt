@@ -1,4 +1,4 @@
-package com.example.days_snap
+package com.example.daypix
 
 import io.flutter.embedding.android.FlutterActivity
 

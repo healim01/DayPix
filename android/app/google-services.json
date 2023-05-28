@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "916323534675",
+    "project_id": "daypix-d89f3",
+    "storage_bucket": "daypix-d89f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916323534675:android:239e21e10a6ae0427dc3a6",
+        "android_client_info": {
+          "package_name": "com.example.daypix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916323534675-m59f1n9vt1ik7vfuaa62e1a5nolij3mi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClvx1Wk98yJOKMD4dKonQIfH6ShOoJZHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916323534675-m59f1n9vt1ik7vfuaa62e1a5nolij3mi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "916323534675-rg6ft2n61qoi0jhssfvru7bkfaica8oj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.daysSnap"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916323534675:android:36a2fcd827edaf257dc3a6",
+        "android_client_info": {
+          "package_name": "com.example.days_snap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916323534675-m59f1n9vt1ik7vfuaa62e1a5nolij3mi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClvx1Wk98yJOKMD4dKonQIfH6ShOoJZHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916323534675-m59f1n9vt1ik7vfuaa62e1a5nolij3mi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "916323534675-rg6ft2n61qoi0jhssfvru7bkfaica8oj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.daysSnap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

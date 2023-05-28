@@ -1,6 +1,6 @@
 {
-    "name": "days_snap",
-    "short_name": "days_snap",
+    "name": "dayfix",
+    "short_name": "daypix",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
