@@ -25,16 +25,20 @@ class _WrtTextPageState extends State<WrtTextPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("already?");
+    print(widget.docID);
     return Scaffold(
       appBar: AppBar(
         // title: Text(widget.date), // TODO : remove
         actions: [
           TextButton(
-              onPressed: () {
+              onPressed: () async {
+                print("onTap");
                 print(widget.docID);
+                print(widget.img);
                 print(_textController.text);
                 print(emoji);
-                FirebaseFirestore.instance
+                await FirebaseFirestore.instance
                     .collection('post')
                     .doc(widget.docID)
                     .update({
@@ -294,7 +298,7 @@ class Emoji extends StatelessWidget {
                         const SizedBox(width: 20),
                         InkWell(
                           onTap: () {
-                            emoji = "Think";
+                            emoji = "think";
                           },
                           child: SizedBox(
                             width: 50,

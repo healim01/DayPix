@@ -147,10 +147,10 @@ class _WrtPicPageState extends State<WrtPicPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final user = FirebaseAuth.instance.currentUser;
 
-                      FirebaseFirestore.instance
+                      await FirebaseFirestore.instance
                           .collection(
                               'post') // .collection('post/${user?.uid}')
                           .add({
@@ -164,6 +164,8 @@ class _WrtPicPageState extends State<WrtPicPage> {
                           .catchError(
                               (error) => print("Failed to add user: $error"))
                           .then((DocumentReference doc) => docID = doc.id);
+
+                      print(docID);
 
                       Navigator.push(
                         context,
