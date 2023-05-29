@@ -13,8 +13,6 @@ class DetailPage extends StatelessWidget {
     return FutureBuilder<Object>(
         future: FirebaseFirestore.instance.collection('post').doc(docID).get(),
         builder: (context, AsyncSnapshot snapshot) {
-          print("here");
-          print(snapshot.data['date']);
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -26,19 +24,12 @@ class DetailPage extends StatelessWidget {
                   size: 30,
                 ),
               ),
-              title: const Text('DayPix'),
+              title: Text(snapshot.data['date']),
             ),
             body: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(snapshot.data['date']),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   const Row(
                     children: [
