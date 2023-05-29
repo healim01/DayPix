@@ -48,13 +48,17 @@ class _WrtTextPageState extends State<WrtTextPage> {
                   "lon": "-94.726355",
                 }).catchError((error) => print("Failed to add user: $error"));
 
-                print(_textController.text);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          DetailPage(docID: widget.docID, img: widget.img)),
-                );
+                // print(_textController.text);
+                if (!mounted)
+                  return;
+                else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DetailPage(docID: widget.docID, img: widget.img)),
+                  );
+                }
               },
               style: TextButton.styleFrom(
                 fixedSize: const Size(75, 10),
