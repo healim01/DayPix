@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:kpostal/kpostal.dart';
 
 class LocationPage extends StatefulWidget {
+  final uID;
   final docID;
-  const LocationPage({super.key, required this.docID});
+  const LocationPage({super.key, required this.uID, required this.docID});
 
   @override
   State<LocationPage> createState() => _LocationPageState();
@@ -27,13 +28,15 @@ class _LocationPageState extends State<LocationPage> {
           this.longitude = result.longitude.toString();
 
           await FirebaseFirestore.instance
-              .collection('post')
+              .collection(widget.uID)
               .doc(widget.docID)
               .update({
             "address": this.address,
             "lat": this.latitude,
             "lon": this.longitude,
           }).catchError((error) => print("Failed to add user: $error"));
+
+          print("??");
         });
       },
     );
