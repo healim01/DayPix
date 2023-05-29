@@ -1,6 +1,9 @@
+import 'package:daypix/profile.dart';
 import 'package:daypix/wrt_pic.dart';
+import 'package:daypix/login.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,9 +18,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user = ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
       appBar: AppBar(
         title: const Text("DayPix"),
+        leading: IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            if (user != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(),
+                  settings: RouteSettings(
+                    arguments: user
+                  ),
+                ),
+              );
+            }
+          },
+        ),
       ),
       body: Column(
         children: [
