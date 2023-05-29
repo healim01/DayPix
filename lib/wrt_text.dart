@@ -1,16 +1,20 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daypix/detail.dart';
 // import 'package:daypix/location.dart';
 
 var isText = 0;
-String emoji = "";
+String emoji = '';
 
 class WrtTextPage extends StatefulWidget {
-  final path;
-  const WrtTextPage({super.key, required this.path});
+  final docID;
+  final img;
+  const WrtTextPage({super.key, required this.docID, required this.img});
 
   @override
   State<WrtTextPage> createState() => _WrtTextPageState();
@@ -23,13 +27,29 @@ class _WrtTextPageState extends State<WrtTextPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // title: Text(widget.date), // TODO : remove
         actions: [
           TextButton(
               onPressed: () {
+                print(widget.docID);
+                print(_textController.text);
+                print(emoji);
+                FirebaseFirestore.instance
+                    .collection('post')
+                    .doc(widget.docID)
+                    .update({
+                  'text': _textController.text,
+                  'emoji': emoji,
+                  "lat": "32.464619",
+                  "lon": "-94.726355",
+                }).catchError((error) => print("Failed to add user: $error"));
+
                 print(_textController.text);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DetailPage()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DetailPage(docID: widget.docID, img: widget.img)),
                 );
               },
               style: TextButton.styleFrom(
@@ -51,11 +71,11 @@ class _WrtTextPageState extends State<WrtTextPage> {
           Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30.0),
-              child: Image.asset(
-                'assets/default_pic1.jpeg',
+              child: Image.file(
+                File(widget.img),
+                fit: BoxFit.fill,
                 width: 350.0,
                 height: 350.0,
-                fit: BoxFit.fill,
               ),
             ),
           ),
@@ -328,6 +348,7 @@ class Emoji extends StatelessWidget {
                 ),
               );
             });
+        print(emoji);
       },
       child: Container(
         width: 70.0,

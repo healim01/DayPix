@@ -1,21 +1,20 @@
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:daypix/app.dart';
+import 'package:daypix/firebase_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-//   // await Firebase.initializeApp(
-//   //   options: DefaultFirebaseOptions.currentPlatform,
-//   // );
-//   runApp(const DayPixApp());
-//   // runApp(ChangeNotifierProvider(
-//   //   builder: (context, child) => const ShrineApp(),
-//   //   create: (BuildContext context) {},
-//   // ));
-// }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-void main() => runApp(const DayPixApp());
+  runApp(ChangeNotifierProvider(
+    builder: (context, child) => const DayPixApp(),
+    create: (BuildContext context) {},
+  ));
+}
