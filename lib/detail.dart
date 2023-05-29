@@ -17,7 +17,7 @@ class DetailPage extends StatelessWidget {
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/home');
                 },
                 icon: const Icon(
                   Icons.home_outlined,
