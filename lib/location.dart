@@ -1,138 +1,48 @@
-// import 'dart:js';
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-
-// import 'package:kpostal/kpostal.dart';
-// import 'package:remedi_kopo/remedi_kopo.dart';
-// import 'package:path/path.dart';
-// import 'dart:js';
-
-// final _AddressController = TextEditingController();
-
-// // _addressAPI() async {
-// //   KopoModel model = await Navigator.push(
-// //     context as BuildContext,
-// //     CupertinoPageRoute(
-// //       builder: (context) => RemediKopo(),
-// //     ),
-// //   );
-
-// //   _AddressController.text =
-// //       '${model.zonecode!} ${model.address!} ${model.buildingName}';
-// // }
-
-// // Widget AddressText() {
-// //   return GestureDetector(
-// //     onTap: () {
-// //       HapticFeedback.mediumImpact();
-// //       _addressAPI();
-// //     },
-// //     child: Column(children: [
-// //       Text(
-// //         '주소',
-// //         style: TextStyle(fontSize: 15, color: Colors.amber),
-// //       ),
-// //       TextField(
-// //         enabled: false,
-// //         decoration: InputDecoration(isDense: false),
-// //         controller: _AddressController,
-// //         style: TextStyle(fontSize: 20),
-// //       )
-// //     ]),
-// //   );
-// // }
-
-// class LocationPage extends StatefulWidget {
-//   const LocationPage({super.key});
-
-//   @override
-//   State<LocationPage> createState() => _LocationPageState();
-// }
-
-// class _LocationPageState extends State<LocationPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(),
-//       body: Column(children: [
-// // Use callback.
-//         Icon(Icons.abc),
-//         AddressText(),
-//         // TextButton(
-//         //   onPressed: () async {
-//         //     await Navigator.push(
-//         //         context,
-//         //         MaterialPageRoute(
-//         //           builder: (_) => KpostalView(
-//         //             useLocalServer: true,
-//         //             localPort: 8080,
-//         //             callback: (Kpostal result) {
-//         //               print(result.address);
-//         //             },
-//         //           ),
-//         //         ));
-//         //   },
-//         //   child: const Text('Search!'),
-//         // ),
-
-// // Not use callback.
-//         // TextButton(
-//         //   onPressed: () async {
-//         //     Kpostal result = await Navigator.push(
-//         //         context, MaterialPageRoute(builder: (_) => KpostalView()));
-//         //     print(result.address);
-//         //   },
-//         //   child: const Text('Search!!'),
-//         // ),
-//       ]),
-//     );
-//   }
-// }
-
-// Widget AddressText() {
-//   return GestureDetector(
-//     onTap: () {
-//       HapticFeedback.mediumImpact();
-//       _addressAPI(); // 카카오 주소 API
-//     },
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const Text('주소',
-//             style: TextStyle(fontSize: 15, color: Colors.blueGrey)),
-//         TextFormField(
-//           enabled: false,
-//           decoration: const InputDecoration(
-//             isDense: false,
-//           ),
-//           controller: _AddressController,
-//           style: const TextStyle(fontSize: 20),
-//         ),
-//       ],
-//     ),
-//   );
-// }
-
-// // _addressAPI() async {
-// //   KopoModel model = await Navigator.push(
-// //     context,
-// //     CupertinoPageRoute(
-// //       builder: (context) => RemediKopo(),
-// //     ),
-// //   );
-// //   _AddressController.text =
-// //       '${model.zonecode!} ${model.address!} ${model.buildingName!}';
-// // }
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kpostal/kpostal.dart';
 
-class Loca extends StatefulWidget {
-  Loca({Key? key, required this.title}) : super(key: key);
+class LocationPage extends StatefulWidget {
+  final docID;
+  const LocationPage({super.key, required this.docID});
 
-  final String title;
+  @override
+  State<LocationPage> createState() => _LocationPageState();
+}
+
+class _LocationPageState extends State<LocationPage> {
+  String address = '-';
+  String latitude = '-';
+  String longitude = '-';
+
+  @override
+  Widget build(BuildContext context) {
+    return KpostalView(
+      useLocalServer: true,
+      localPort: 1024,
+      callback: (Kpostal result) {
+        setState(() async {
+          this.address = result.address;
+          this.latitude = result.latitude.toString();
+          this.longitude = result.longitude.toString();
+
+          await FirebaseFirestore.instance
+              .collection('post')
+              .doc(widget.docID)
+              .update({
+            "address": this.address,
+            "lat": this.latitude,
+            "lon": this.longitude,
+          }).catchError((error) => print("Failed to add user: $error"));
+        });
+      },
+    );
+  }
+}
+
+class Loca extends StatefulWidget {
+  final docID;
+  Loca({Key? key, required this.docID}) : super(key: key);
 
   @override
   _LocaState createState() => _LocaState();
@@ -150,7 +60,7 @@ class _LocaState extends State<Loca> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.docID),
       ),
       body: Container(
         alignment: Alignment.center,
