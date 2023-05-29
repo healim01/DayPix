@@ -4,20 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
+  final uID;
   final docID;
   final img;
-  const DetailPage({super.key, required this.docID, required this.img});
+  const DetailPage(
+      {super.key, required this.uID, required this.docID, required this.img});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Object>(
-        future: FirebaseFirestore.instance.collection('post').doc(docID).get(),
+        future: FirebaseFirestore.instance.collection(uID).doc(docID).get(),
         builder: (context, AsyncSnapshot snapshot) {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushNamed(context, '/home'); // TODO : 상의하기
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const HomePage(),
+                  //     settings: RouteSettings(
+                  //       arguments: UserModel(
+                  //         uid: id ?? "",
+                  //         name: name ?? "",
+                  //         email: email ?? "",
+                  //         url: url ?? "",
+                  //       ),
+                  //     ),
+                  //   ),
+                  // );
                 },
                 icon: const Icon(
                   Icons.home_outlined,
