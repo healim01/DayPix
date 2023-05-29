@@ -31,11 +31,11 @@ class DetailPage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     children: [
                       Icon(Icons.location_on),
                       SizedBox(width: 10),
-                      Text("HANDONG UNIV"), // TODO: 위치 GPS
+                      Text(snapshot.data['address'])
                     ],
                   ),
                   const SizedBox(height: 10),
