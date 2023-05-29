@@ -39,8 +39,8 @@ class DetailPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Row(
-                    children: [
+                  Row(
+                    children: const [
                       Icon(Icons.cloud),
                       SizedBox(width: 10),
                       Text("Cloudy"), // TODO: 날씨 API
