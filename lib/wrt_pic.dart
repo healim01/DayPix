@@ -54,139 +54,127 @@ class _WrtPicPageState extends State<WrtPicPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.date), // TODO : remove
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Center(
-              child: _imgGallery == null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Image.asset(
-                        'assets/default_pic1.jpeg',
-                        width: 350.0,
-                        height: 350.0,
-                        fit: BoxFit.fill,
-                      ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Image.file(
-                        File(_imgGallery!.path),
-                        fit: BoxFit.fill,
-                        width: 350.0,
-                        height: 350.0,
-                      ),
-                    ),
+    return StreamBuilder<Object>(
+        stream: null,
+        builder: (context, snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(widget.date), // TODO : remove
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () async {
-                    await pickImageGallery();
-                    final ref = storageRef.child('images').child(imagePath);
-
-                    imgURL = '';
-                    if (imagePath != '') {
-                      await ref.putFile(_imgGallery!);
-                      await storageRef
-                          .child('images')
-                          .child(imagePath)
-                          .getDownloadURL()
-                          .then((v) => imgURL = v)
-                          .catchError(
-                              (error) => print("Failed to add user: $error"));
-                    }
-                  },
-                  tooltip: 'Pick Image from Gallery',
-                  icon: const Icon(
-                    Icons.image,
-                    size: 50,
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Center(
+                    child: imgURL == ''
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Image.asset(
+                              'assets/default_pic1.jpeg',
+                              width: 350.0,
+                              height: 350.0,
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Image.network(
+                              imgURL,
+                              fit: BoxFit.fill,
+                              width: 350.0,
+                              height: 350.0,
+                            ),
+                          ),
                   ),
-                ),
-                IconButton(
-                  onPressed: pickImageCamera,
-                  tooltip: 'Pick Image from Camera',
-                  icon: const Icon(
-                    Icons.camera_alt,
-                    size: 50,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () async {
+                          await pickImageGallery();
+                          final ref =
+                              storageRef.child('images').child(imagePath);
+
+                          imgURL = '';
+                          if (imagePath != '') {
+                            await ref.putFile(_imgGallery!);
+                            await storageRef
+                                .child('images')
+                                .child(imagePath)
+                                .getDownloadURL()
+                                .then((v) => imgURL = v)
+                                .catchError((error) =>
+                                    print("Failed to add user: $error"));
+                          }
+                          setState(() {});
+                        },
+                        tooltip: 'Pick Image from Gallery',
+                        icon: const Icon(
+                          Icons.image,
+                          size: 50,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: pickImageCamera,
+                        tooltip: 'Pick Image from Camera',
+                        icon: const Icon(
+                          Icons.camera_alt,
+                          size: 50,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            // TextField(
-            //   controller: _productnameController,
-            //   decoration: const InputDecoration(
-            //     filled: true,
-            //     labelText: 'Product Name',
-            //   ),
-            // ),
-            // const SizedBox(height: 5),
-            // TextField(
-            //   controller: _priceController,
-            //   decoration: const InputDecoration(
-            //     filled: true,
-            //     labelText: 'Price',
-            //   ),
-            // ),
-            // const SizedBox(height: 5),
-            // TextField(
-            //   controller: _descController,
-            //   decoration: const InputDecoration(
-            //     filled: true,
-            //     labelText: 'Description',
-            //   ),
-            // ),
-            const Expanded(child: SizedBox()),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                    onPressed: () {
-                      final user = FirebaseAuth.instance.currentUser;
+                  const Expanded(child: SizedBox()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          onPressed: () async {
+                            final user = FirebaseAuth.instance.currentUser;
+                            print(imgURL);
 
-                      FirebaseFirestore.instance
-                          .collection(
-                              'post') // .collection('post/${user?.uid}')
-                          .add({
-                            'date': widget.date,
-                            'img': imgURL,
-                            'text': "",
-                            'emoji': '',
-                            "lat": "",
-                            "lon": "",
-                          })
-                          .catchError(
-                              (error) => print("Failed to add user: $error"))
-                          .then((DocumentReference doc) => docID = doc.id);
+                            await FirebaseFirestore.instance
+                                .collection(
+                                    'post') // .collection('post/${user?.uid}')
+                                .add({
+                                  'date': widget.date,
+                                  'img': imgURL,
+                                  'text': "",
+                                  'emoji': '',
+                                  "lat": "",
+                                  "lon": "",
+                                })
+                                .catchError((error) =>
+                                    print("Failed to add user: $error"))
+                                .then(
+                                    (DocumentReference doc) => docID = doc.id);
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WrtTextPage(
-                                  docID: docID,
-                                  img: _imgGallery!.path,
-                                )),
-                      );
-                    },
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff214894))),
-                    child: const Text("NEXT",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ))),
-              ],
+                            print(docID);
+
+                            if (!mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WrtTextPage(
+                                        docID: docID,
+                                        img: _imgGallery!.path,
+                                      )),
+                            );
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color(0xff214894))),
+                          child: const Text("NEXT",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ))),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                ],
+              ),
             ),
-            const SizedBox(height: 30),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }

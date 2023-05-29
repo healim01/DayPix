@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daypix/location.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -30,21 +31,17 @@ class _WrtTextPageState extends State<WrtTextPage> {
         // title: Text(widget.date), // TODO : remove
         actions: [
           TextButton(
-              onPressed: () {
-                print(widget.docID);
-                print(_textController.text);
-                print(emoji);
-                FirebaseFirestore.instance
+              onPressed: () async {
+                await FirebaseFirestore.instance
                     .collection('post')
                     .doc(widget.docID)
                     .update({
                   'text': _textController.text,
                   'emoji': emoji,
-                  "lat": "32.464619",
-                  "lon": "-94.726355",
                 }).catchError((error) => print("Failed to add user: $error"));
 
-                print(_textController.text);
+                // print(_textController.text);
+                if (!mounted) return;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -104,13 +101,13 @@ class _WrtTextPageState extends State<WrtTextPage> {
               ElevatedButton(
                 onPressed: () {
                   print('map');
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => Loca(
-                  //             title: '',
-                  //           )),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        // builder: (context) => Loca(docID: widget.docID)),
+                        builder: (context) =>
+                            LocationPage(docID: widget.docID)),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff214894),
@@ -294,7 +291,7 @@ class Emoji extends StatelessWidget {
                         const SizedBox(width: 20),
                         InkWell(
                           onTap: () {
-                            emoji = "Think";
+                            emoji = "think";
                           },
                           child: SizedBox(
                             width: 50,
