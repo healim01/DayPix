@@ -13,9 +13,11 @@ var isText = 0;
 String emoji = '';
 
 class WrtTextPage extends StatefulWidget {
+  final uID;
   final docID;
   final img;
-  const WrtTextPage({super.key, required this.docID, required this.img});
+  const WrtTextPage(
+      {super.key, required this.uID, required this.docID, required this.img});
 
   @override
   State<WrtTextPage> createState() => _WrtTextPageState();
@@ -33,7 +35,7 @@ class _WrtTextPageState extends State<WrtTextPage> {
           TextButton(
               onPressed: () async {
                 await FirebaseFirestore.instance
-                    .collection('post')
+                    .collection(widget.uID)
                     .doc(widget.docID)
                     .update({
                   'text': _textController.text,
@@ -45,8 +47,10 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          DetailPage(docID: widget.docID, img: widget.img)),
+                      builder: (context) => DetailPage(
+                          uID: widget.uID,
+                          docID: widget.docID,
+                          img: widget.img)),
                 );
               },
               style: TextButton.styleFrom(
@@ -104,9 +108,8 @@ class _WrtTextPageState extends State<WrtTextPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        // builder: (context) => Loca(docID: widget.docID)),
                         builder: (context) =>
-                            LocationPage(docID: widget.docID)),
+                            LocationPage(uID: widget.uID, docID: widget.docID)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

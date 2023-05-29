@@ -134,8 +134,8 @@ class _WrtPicPageState extends State<WrtPicPage> {
                             print(imgURL);
 
                             await FirebaseFirestore.instance
-                                .collection(
-                                    'post') // .collection('post/${user?.uid}')
+                                .collection(user!
+                                    .uid) // .collection('post/${user?.uid}')
                                 .add({
                                   'date': widget.date,
                                   'img': imgURL,
@@ -156,6 +156,7 @@ class _WrtPicPageState extends State<WrtPicPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => WrtTextPage(
+                                        uID: user.uid,
                                         docID: docID,
                                         img: _imgGallery!.path,
                                       )),
