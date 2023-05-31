@@ -1,3 +1,4 @@
+import 'package:daypix/map.dart';
 import 'package:daypix/profile.dart';
 import 'package:daypix/wrt_pic.dart';
 import 'package:daypix/login.dart';
@@ -21,7 +22,6 @@ class _HomePageState extends State<HomePage> {
         ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("DayPix"),
         leading: IconButton(
           icon: const Icon(Icons.person),
           onPressed: () {
@@ -29,13 +29,26 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
+                  builder: (context) => const ProfilePage(),
                   settings: RouteSettings(arguments: user),
                 ),
               );
             }
           },
         ),
+        title: const Text("DayPix"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                print(("object"));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapPage(uid: user.uid),
+                    ));
+              },
+              icon: const Icon(Icons.map))
+        ],
       ),
       body: Column(
         children: [
