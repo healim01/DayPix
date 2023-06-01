@@ -44,7 +44,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MapPage(uid: user.uid),
+                      builder: (context) => MapPage(),
+                      settings: RouteSettings(arguments: user),
                     ));
               },
               icon: const Icon(Icons.map))
@@ -85,7 +86,9 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => WrtPicPage(date: formatDate)),
+                    builder: (context) => WrtPicPage(date: formatDate),
+                    settings: RouteSettings(arguments: user),
+                  ),
                 );
               },
               child: const Text("Writing Pic Page"))

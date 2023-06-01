@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/location.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:daypix/login.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daypix/detail.dart';
@@ -28,6 +27,8 @@ class _WrtTextPageState extends State<WrtTextPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
       appBar: AppBar(
         // title: Text(widget.date), // TODO : remove
@@ -47,10 +48,10 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DetailPage(
-                          uID: widget.uID,
-                          docID: widget.docID,
-                          img: widget.img)),
+                    builder: (context) => DetailPage(
+                        uID: widget.uID, docID: widget.docID, img: widget.img),
+                    settings: RouteSettings(arguments: user),
+                  ),
                 );
               },
               style: TextButton.styleFrom(
@@ -92,10 +93,10 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff214894),
-                    minimumSize: const Size(60, 40)),
+                    minimumSize: const Size(80, 45)),
                 child: const Icon(
                   Icons.text_fields,
-                  size: 20,
+                  size: 30,
                   color: Colors.white,
                 ),
               ),
@@ -114,17 +115,17 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff214894),
-                    minimumSize: const Size(60, 40)),
+                    minimumSize: const Size(80, 45)),
                 child: const Icon(
                   Icons.location_on,
-                  size: 20,
+                  size: 30,
                   color: Colors.white,
                 ),
               ),
             ],
           ),
           Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
               child: isText == 1
                   ? TextField(
                       controller: _textController,
@@ -234,7 +235,7 @@ class Emoji extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -341,15 +342,15 @@ class Emoji extends StatelessWidget {
         print(emoji);
       },
       child: Container(
-        width: 70.0,
-        height: 40.0,
+        width: 80.0,
+        height: 45.0,
         decoration: BoxDecoration(
           color: const Color(0xff214894),
           borderRadius: BorderRadius.circular(20),
         ),
         child: const Icon(
           Icons.tag_faces_sharp,
-          size: 20,
+          size: 30,
           color: Colors.white,
         ),
       ),

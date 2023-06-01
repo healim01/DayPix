@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MapPage extends StatefulWidget {
-  final uid;
-  const MapPage({super.key, required this.uid});
+  const MapPage({super.key});
 
   @override
   State<MapPage> createState() => MapPageState();
@@ -28,10 +28,12 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userRef = FirebaseFirestore.instance.collection(widget.uid);
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
+    final userRef = FirebaseFirestore.instance.collection(user.uid);
 
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection(widget.uid).snapshots(),
+      stream: FirebaseFirestore.instance.collection(user.uid).snapshots(),
       builder: (context, snapshot) {
         final docu = snapshot.data!.docs;
 

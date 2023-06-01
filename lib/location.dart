@@ -13,8 +13,6 @@ class LocationPage extends StatefulWidget {
 
 class _LocationPageState extends State<LocationPage> {
   String address = '-';
-  String latitude = '-';
-  String longitude = '-';
   String kakaoLatitude = '-';
   String kakaoLongitude = '-';
 
