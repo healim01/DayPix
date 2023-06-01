@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:kpostal/kpostal.dart';
 
 class LocationPage extends StatefulWidget {
+  final uID;
   final docID;
-  const LocationPage({super.key, required this.docID});
+  const LocationPage({super.key, required this.uID, required this.docID});
 
   @override
   State<LocationPage> createState() => _LocationPageState();
@@ -12,28 +13,35 @@ class LocationPage extends StatefulWidget {
 
 class _LocationPageState extends State<LocationPage> {
   String address = '-';
-  String latitude = '-';
-  String longitude = '-';
+  String kakaoLatitude = '-';
+  String kakaoLongitude = '-';
 
   @override
   Widget build(BuildContext context) {
     return KpostalView(
       useLocalServer: true,
-      localPort: 1024,
+      localPort: 8080,
+      kakaoKey: '1dfce4d9fc58503f87e067a944c655a6',
       callback: (Kpostal result) {
         setState(() async {
-          this.address = result.address;
-          this.latitude = result.latitude.toString();
-          this.longitude = result.longitude.toString();
+          address = result.address;
+          kakaoLatitude = result.kakaoLatitude.toString();
+          kakaoLongitude = result.kakaoLongitude.toString();
+
+          print(address);
+          print(kakaoLatitude);
+          print(kakaoLongitude);
 
           await FirebaseFirestore.instance
-              .collection('post')
+              .collection(widget.uID)
               .doc(widget.docID)
               .update({
-            "address": this.address,
-            "lat": this.latitude,
-            "lon": this.longitude,
+            "address": address,
+            "lat": kakaoLatitude,
+            "lon": kakaoLongitude,
           }).catchError((error) => print("Failed to add user: $error"));
+
+          print("??");
         });
       },
     );

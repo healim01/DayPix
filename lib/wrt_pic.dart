@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 
-// import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daypix/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +53,8 @@ class _WrtPicPageState extends State<WrtPicPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
     return StreamBuilder<Object>(
         stream: null,
         builder: (context, snapshot) {
@@ -115,7 +116,24 @@ class _WrtPicPageState extends State<WrtPicPage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: pickImageCamera,
+                        onPressed: () async {
+                          await pickImageCamera();
+                          final ref =
+                              storageRef.child('images').child(imagePath);
+
+                          imgURL = '';
+                          if (imagePath != '') {
+                            await ref.putFile(_imgGallery!);
+                            await storageRef
+                                .child('images')
+                                .child(imagePath)
+                                .getDownloadURL()
+                                .then((v) => imgURL = v)
+                                .catchError((error) =>
+                                    print("Failed to add user: $error"));
+                          }
+                          setState(() {});
+                        },
                         tooltip: 'Pick Image from Camera',
                         icon: const Icon(
                           Icons.camera_alt,
@@ -130,12 +148,11 @@ class _WrtPicPageState extends State<WrtPicPage> {
                     children: [
                       TextButton(
                           onPressed: () async {
-                            final user = FirebaseAuth.instance.currentUser;
+                            final userID = FirebaseAuth.instance.currentUser;
                             print(imgURL);
 
                             await FirebaseFirestore.instance
-                                .collection(
-                                    'post') // .collection('post/${user?.uid}')
+                                .collection(userID!.uid)
                                 .add({
                                   'date': widget.date,
                                   'img': imgURL,
@@ -155,10 +172,13 @@ class _WrtPicPageState extends State<WrtPicPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => WrtTextPage(
-                                        docID: docID,
-                                        img: _imgGallery!.path,
-                                      )),
+                                builder: (context) => WrtTextPage(
+                                  uID: user.uid,
+                                  docID: docID,
+                                  img: _imgGallery!.path,
+                                ),
+                                settings: RouteSettings(arguments: user),
+                              ),
                             );
                           },
                           style: ButtonStyle(
@@ -166,8 +186,10 @@ class _WrtPicPageState extends State<WrtPicPage> {
                                   const Color(0xff214894))),
                           child: const Text("NEXT",
                               style: TextStyle(
-                                color: Colors.white,
-                              ))),
+                                  color: Colors.white, fontSize: 20))),
+                      const SizedBox(
+                        width: 15,
+                      )
                     ],
                   ),
                   const SizedBox(height: 30),

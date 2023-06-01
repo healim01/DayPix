@@ -11,7 +11,11 @@ class UserModel {
   String name;
   final String url;
   final String email;
-  UserModel({required this.uid, required this.name, required this.url, required this.email});
+  UserModel(
+      {required this.uid,
+      required this.name,
+      required this.url,
+      required this.email});
 }
 
 class LoginPage extends StatefulWidget {
@@ -22,7 +26,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -36,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
 
   /* Sign In Email */
   Future<void> signInWithEmail(String email, String password) async {
-
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -48,17 +50,19 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         id = user?.uid;
         email = email;
-        url = url!= ""? url : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg";
+        url = url != ""
+            ? url
+            : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg";
       });
       print(id);
       print(email);
       print(url);
       print(name);
-      
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => const HomePage(),
           settings: RouteSettings(
             arguments: UserModel(
               uid: id ?? "",
@@ -70,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
       print("Login 성공");
-      
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -86,22 +89,24 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     }
-    
   }
+
   /* Sign In google */
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();  
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-  
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
 
-    final UserCredential authResult = await _auth.signInWithCredential(credential);
+    final UserCredential authResult =
+        await _auth.signInWithCredential(credential);
     final User? user = authResult.user;
 
     setState(() {
@@ -125,15 +130,17 @@ class _LoginPageState extends State<LoginPage> {
         "uid": id,
         "name": name,
         "email": email,
-        "url": url != "" ? url : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg",
+        "url": url != ""
+            ? url
+            : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg",
         "registeredDate": DateTime.now(),
       });
     }
-   
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomePage(),
+        builder: (context) => const HomePage(),
         settings: RouteSettings(
           arguments: UserModel(
             uid: id ?? "",
@@ -162,7 +169,6 @@ class _LoginPageState extends State<LoginPage> {
     print("User Sign Out");
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,9 +179,12 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 100),
             const Text(
               'LOGIN',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
+              style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 0, 0, 0)),
             ),
-            SizedBox(height: 35),
+            const SizedBox(height: 35),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -236,7 +245,6 @@ class _LoginPageState extends State<LoginPage> {
                     //     content: Text('로그인 성공'),
                     //   ),
                     // );
-                    
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -290,22 +298,22 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 50),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor:Colors.black,
-                    fixedSize: const Size(350, 65),
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // 버튼을 직사각형으로 설정
-                  ),
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                fixedSize: const Size(350, 65),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8), // 버튼을 직사각형으로 설정
                 ),
+              ),
               onPressed: () {
                 signInWithGoogle();
               },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+              child: const Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Image(
                       image: AssetImage("assets/google_logo.png"),
                       height: 24.0,
@@ -329,15 +337,15 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 120),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children : [
+              children: [
                 const Text(
                   'Not a member?',
-                    style: TextStyle(
-                      color: Color.fromRGBO(142, 142, 142, 1),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  style: TextStyle(
+                    color: Color.fromRGBO(142, 142, 142, 1),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
                 TextButton(
                   child: const Text(
                     'Sign up now',
@@ -346,12 +354,12 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
-                      decorationColor: Color.fromRGBO(142, 142, 142, 1), 
+                      decorationColor: Color.fromRGBO(142, 142, 142, 1),
                     ),
                   ),
                   onPressed: () {
                     print("signup press");
-                    Navigator.pushNamed(context, '/signup');             
+                    Navigator.pushNamed(context, '/signup');
                   },
                 ),
               ],

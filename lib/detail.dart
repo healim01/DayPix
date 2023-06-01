@@ -1,27 +1,40 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daypix/home.dart';
+import 'package:daypix/login.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
+  final uID;
   final docID;
   final img;
-  const DetailPage({super.key, required this.docID, required this.img});
+  const DetailPage(
+      {super.key, required this.uID, required this.docID, required this.img});
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
     return FutureBuilder<Object>(
-        future: FirebaseFirestore.instance.collection('post').doc(docID).get(),
+        future: FirebaseFirestore.instance.collection(uID).doc(docID).get(),
         builder: (context, AsyncSnapshot snapshot) {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home');
+                  // Navigator.pushNamed(context, '/home'); // TODO : 상의하기
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                      settings: RouteSettings(arguments: user),
+                    ),
+                  );
                 },
                 icon: const Icon(
                   Icons.home_outlined,
-                  size: 30,
+                  size: 40,
                 ),
               ),
               title: Text(snapshot.data['date']),
@@ -33,17 +46,25 @@ class DetailPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      Icon(Icons.location_on),
-                      SizedBox(width: 10),
-                      Text(snapshot.data['address'])
+                      const SizedBox(width: 10),
+                      const Icon(Icons.location_on),
+                      const SizedBox(width: 10),
+                      Text(
+                        snapshot.data['address'],
+                        style: TextStyle(fontSize: 20),
+                      )
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
+                      SizedBox(width: 10),
                       Icon(Icons.cloud),
                       SizedBox(width: 10),
-                      Text("Cloudy"), // TODO: 날씨 API
+                      Text(
+                        "Cloudy",
+                        style: TextStyle(fontSize: 20),
+                      ), // TODO: 날씨 API
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -55,8 +76,8 @@ class DetailPage extends StatelessWidget {
                           child: Image.file(
                             File(img),
                             fit: BoxFit.fill,
-                            width: 350.0,
-                            height: 350.0,
+                            width: 400.0,
+                            height: 400.0,
                           ),
                         ),
                       ),
@@ -65,7 +86,7 @@ class DetailPage extends StatelessWidget {
                         right: 15,
                         child: Image.asset(
                           "assets/emoji/${snapshot.data['emoji']}.png",
-                          width: 30,
+                          width: 40,
                           color: Colors.white,
                         ),
                       ),

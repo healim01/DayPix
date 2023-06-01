@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/location.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:daypix/login.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daypix/detail.dart';
@@ -13,9 +12,11 @@ var isText = 0;
 String emoji = '';
 
 class WrtTextPage extends StatefulWidget {
+  final uID;
   final docID;
   final img;
-  const WrtTextPage({super.key, required this.docID, required this.img});
+  const WrtTextPage(
+      {super.key, required this.uID, required this.docID, required this.img});
 
   @override
   State<WrtTextPage> createState() => _WrtTextPageState();
@@ -26,6 +27,8 @@ class _WrtTextPageState extends State<WrtTextPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
       appBar: AppBar(
         // title: Text(widget.date), // TODO : remove
@@ -33,7 +36,7 @@ class _WrtTextPageState extends State<WrtTextPage> {
           TextButton(
               onPressed: () async {
                 await FirebaseFirestore.instance
-                    .collection('post')
+                    .collection(widget.uID)
                     .doc(widget.docID)
                     .update({
                   'text': _textController.text,
@@ -45,8 +48,10 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          DetailPage(docID: widget.docID, img: widget.img)),
+                    builder: (context) => DetailPage(
+                        uID: widget.uID, docID: widget.docID, img: widget.img),
+                    settings: RouteSettings(arguments: user),
+                  ),
                 );
               },
               style: TextButton.styleFrom(
@@ -88,10 +93,10 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff214894),
-                    minimumSize: const Size(60, 40)),
+                    minimumSize: const Size(80, 45)),
                 child: const Icon(
                   Icons.text_fields,
-                  size: 20,
+                  size: 30,
                   color: Colors.white,
                 ),
               ),
@@ -104,24 +109,23 @@ class _WrtTextPageState extends State<WrtTextPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        // builder: (context) => Loca(docID: widget.docID)),
                         builder: (context) =>
-                            LocationPage(docID: widget.docID)),
+                            LocationPage(uID: widget.uID, docID: widget.docID)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff214894),
-                    minimumSize: const Size(60, 40)),
+                    minimumSize: const Size(80, 45)),
                 child: const Icon(
                   Icons.location_on,
-                  size: 20,
+                  size: 30,
                   color: Colors.white,
                 ),
               ),
             ],
           ),
           Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
               child: isText == 1
                   ? TextField(
                       controller: _textController,
@@ -165,12 +169,12 @@ class Emoji extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          onTap: () {
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "happy";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/happy.png',
@@ -181,13 +185,12 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "sad";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/sad.png',
@@ -198,13 +201,12 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "angry";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/angry.png',
@@ -215,13 +217,12 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "bored";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/bored.png',
@@ -232,35 +233,18 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
-                            emoji = "love";
-                          },
-                          child: SizedBox(
-                            width: 50,
-                            child: Column(children: [
-                              Image.asset(
-                                'assets/emoji/love.png',
-                                width: 50,
-                                fit: BoxFit.fill,
-                              ),
-                              const Text("Love")
-                            ]),
-                          ),
-                        ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          onTap: () {
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "sick";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/sick.png',
@@ -271,30 +255,43 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
-                            emoji = "sleepy";
+                        MaterialButton(
+                          onPressed: () {
+                            emoji = "love";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
-                                'assets/emoji/sleepy.png',
+                                'assets/emoji/love.png',
                                 width: 50,
                                 fit: BoxFit.fill,
                               ),
-                              const Text("Sleepy")
+                              const Text("Love")
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
+                        // MaterialButton(
+                        //   onPressed: () {
+                        //     emoji = "sleepy";
+                        //   },
+                        //   child: SizedBox(
+                        //     child: Column(children: [
+                        //       Image.asset(
+                        //         'assets/emoji/sleepy.png',
+                        //         width: 50,
+                        //         fit: BoxFit.fill,
+                        //       ),
+                        //       const Text("Sleepy")
+                        //     ]),
+                        //   ),
+                        // ),
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "think";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/think.png',
@@ -305,30 +302,27 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
-                            emoji = "wink";
-                          },
-                          child: SizedBox(
-                            width: 50,
-                            child: Column(children: [
-                              Image.asset(
-                                'assets/emoji/wink.png',
-                                width: 50,
-                                fit: BoxFit.fill,
-                              ),
-                              const Text("Wink")
-                            ]),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
+                        // MaterialButton(
+                        //   onPressed: () {
+                        //     emoji = "wink";
+                        //   },
+                        //   child: SizedBox(
+                        //     child: Column(children: [
+                        //       Image.asset(
+                        //         'assets/emoji/wink.png',
+                        //         width: 40,
+                        //         fit: BoxFit.fill,
+                        //       ),
+                        //       const Text("Wink")
+                        //     ]),
+                        //   ),
+                        // ),
+                        MaterialButton(
+                          onPressed: () {
                             emoji = "hungry";
+                            Navigator.pop(context);
                           },
                           child: SizedBox(
-                            width: 50,
                             child: Column(children: [
                               Image.asset(
                                 'assets/emoji/hungry.png',
@@ -348,15 +342,15 @@ class Emoji extends StatelessWidget {
         print(emoji);
       },
       child: Container(
-        width: 70.0,
-        height: 40.0,
+        width: 80.0,
+        height: 45.0,
         decoration: BoxDecoration(
           color: const Color(0xff214894),
           borderRadius: BorderRadius.circular(20),
         ),
         child: const Icon(
           Icons.tag_faces_sharp,
-          size: 20,
+          size: 30,
           color: Colors.white,
         ),
       ),

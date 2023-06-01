@@ -1,9 +1,9 @@
+import 'package:daypix/map.dart';
 import 'package:daypix/profile.dart';
 import 'package:daypix/wrt_pic.dart';
 import 'package:daypix/login.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,26 +18,38 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = ModalRoute.of(context)!.settings.arguments as UserModel;
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("DayPix"),
         leading: IconButton(
-          icon: Icon(Icons.person),
+          icon: const Icon(Icons.person),
           onPressed: () {
             if (user != null) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
-                  settings: RouteSettings(
-                    arguments: user
-                  ),
+                  builder: (context) => const ProfilePage(),
+                  settings: RouteSettings(arguments: user),
                 ),
               );
             }
           },
         ),
+        title: const Text("DayPix"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                print(("object"));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapPage(),
+                      settings: RouteSettings(arguments: user),
+                    ));
+              },
+              icon: const Icon(Icons.map))
+        ],
       ),
       body: Column(
         children: [
@@ -74,7 +86,9 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => WrtPicPage(date: formatDate)),
+                    builder: (context) => WrtPicPage(date: formatDate),
+                    settings: RouteSettings(arguments: user),
+                  ),
                 );
               },
               child: const Text("Writing Pic Page"))
