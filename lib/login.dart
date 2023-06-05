@@ -58,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       print(url);
       print(name);
 
+      // TODO : 그거 그,,, 코드 넣기
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -66,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             arguments: UserModel(
               uid: id ?? "",
               name: name ?? "",
-              email: email ?? "",
+              email: email,
               url: url ?? "",
             ),
           ),
