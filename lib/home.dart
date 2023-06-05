@@ -3,6 +3,7 @@ import 'package:daypix/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/detail.dart';
 import 'package:daypix/profile.dart';
+import 'package:daypix/search.dart';
 import 'package:daypix/wrt_pic.dart';
 import 'package:daypix/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+
+// TODO : uid 로 firebase열기
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     Future<void> _logout() async {
       try {
         await FirebaseAuth.instance.signOut();
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacementNamed(context, '/');
       } catch (e) {
         print('로그아웃 중 오류가 발생했습니다: $e');
       }
@@ -41,7 +45,7 @@ class _HomePageState extends State<HomePage> {
         final String formattedDate = DateFormat('yy/MM/dd (E)').format(selectedDate);
 
         final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-            .collection('post')
+            .collection(user.uid)
             .where('date', isEqualTo: formattedDate)
             .get();
 
@@ -77,7 +81,15 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () {
               print('Search button');
-              // Navigator.pushNamed(context, '/search');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(),
+                  settings: RouteSettings(
+                    arguments: user,
+                  ),
+                ),
+              );
             },
           ),
           IconButton(
@@ -144,7 +156,13 @@ class _HomePageState extends State<HomePage> {
                   const Icon(Icons.map, color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Map'),
               onTap: () {
-                // Navigate to map page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(),
+                    settings: RouteSettings(arguments: user),
+                  )
+                );
               },
             ),
             ListTile(
@@ -204,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('데이터 가져오기 중 오류가 발생했습니다.');
+                  return const Text('데이터 가져오기 중 오류가 발생했습니다.');
                 } else {
                   final documents = snapshot.data!;
                   if (documents.isEmpty) {
@@ -222,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Text(
+                        const Text(
                           '아직 다이어리가 없어요~ ',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -233,7 +251,17 @@ class _HomePageState extends State<HomePage> {
                         
                         TextButton(
                           onPressed: () {
-                            // TODO: writing page로 가게 하기
+                            String formatDate = selectedDate != null
+                              ? DateFormat('yy/MM/dd (E)').format(selectedDate!)
+                              : DateFormat('yy/MM/dd (E)').format(date!);
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WrtPicPage(date: formatDate),
+                                settings: RouteSettings(arguments: user),
+                              ),
+                            );
                           },
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -243,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             '지금 다이어리 쓰러 가기!',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -269,16 +297,16 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         InkWell(
                           onTap: () {
+                            // TODO: 수정 필요
                             print("detail page let's go~");
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => DetailPage(docID),
-                            //     settings: RouteSettings(
-                            //       arguments: user,
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                    uID: user.uid, docID: docID, img: img),
+                                settings: RouteSettings(arguments: user),
+                              ),
+                            );
                           },
                           child: Image.network(img),
                         ),
