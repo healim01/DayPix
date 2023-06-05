@@ -12,7 +12,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-
 // TODO : uid 로 firebase열기
 
 class HomePage extends StatefulWidget {
@@ -29,7 +28,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = ModalRoute.of(context)!.settings.arguments as UserModel;
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
 
     Future<void> _logout() async {
       try {
@@ -42,7 +42,8 @@ class _HomePageState extends State<HomePage> {
 
     Future<List<DocumentSnapshot>> getPostByDate(DateTime selectedDate) async {
       try {
-        final String formattedDate = DateFormat('yy/MM/dd (E)').format(selectedDate);
+        final String formattedDate =
+            DateFormat('yy/MM/dd (E)').format(selectedDate);
 
         final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection(user.uid)
@@ -84,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SearchPage(),
+                  builder: (context) => const SearchPage(),
                   settings: RouteSettings(
                     arguments: user,
                   ),
@@ -93,12 +94,12 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.person_outlined),
+            icon: const Icon(Icons.person_outlined),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
+                  builder: (context) => const ProfilePage(),
                   settings: RouteSettings(
                     arguments: user,
                   ),
@@ -113,6 +114,8 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
+              decoration:
+                  BoxDecoration(color: Color.fromARGB(255, 33, 72, 148)),
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 80.0, 16.0, 16.0),
                 child: Text(
@@ -124,51 +127,49 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              decoration: BoxDecoration(color: Color.fromARGB(255, 33, 72, 148)),
             ),
             ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-              leading:
-                  const Icon(Icons.person, color: Color.fromARGB(255, 33, 72, 148)),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+              leading: const Icon(Icons.person,
+                  color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('My Page'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
+                    builder: (context) => const ProfilePage(),
                     settings: RouteSettings(arguments: user),
                   ),
                 );
               },
             ),
             ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-              leading:
-                  const Icon(Icons.search, color: Color.fromARGB(255, 33, 72, 148)),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+              leading: const Icon(Icons.search,
+                  color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Search'),
               onTap: () {
                 // Navigate to search page
               },
             ),
             ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-              leading:
-                  const Icon(Icons.map, color: Color.fromARGB(255, 33, 72, 148)),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+              leading: const Icon(Icons.map,
+                  color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Map'),
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MapPage(),
-                    settings: RouteSettings(arguments: user),
-                  )
-                );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MapPage(),
+                      settings: RouteSettings(arguments: user),
+                    ));
               },
             ),
             ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-              leading:
-                  const Icon(Icons.logout, color: Color.fromARGB(255, 33, 72, 148)),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+              leading: const Icon(Icons.logout,
+                  color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Log out'),
               onTap: () {
                 _logout();
@@ -215,9 +216,10 @@ class _HomePageState extends State<HomePage> {
               });
             },
           ),
-          if (selectedDate != null || date != null)
+          if (selectedDate != null)
             FutureBuilder<List<DocumentSnapshot>>(
-              future: getPostByDate(selectedDate ?? date), // selectedDate가 null이면 date를 사용
+              future: getPostByDate(
+                  selectedDate ?? date), // selectedDate가 null이면 date를 사용
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -226,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   final documents = snapshot.data!;
                   if (documents.isEmpty) {
-                    // selectedDate가 null인 경우에도 이 부분이 실행되도록 
+                    // selectedDate가 null인 경우에도 이 부분이 실행되도록
                     return Column(
                       children: [
                         const SizedBox(height: 30),
@@ -248,17 +250,18 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        
                         TextButton(
                           onPressed: () {
                             String formatDate = selectedDate != null
-                              ? DateFormat('yy/MM/dd (E)').format(selectedDate!)
-                              : DateFormat('yy/MM/dd (E)').format(date!);
+                                ? DateFormat('yy/MM/dd (E)')
+                                    .format(selectedDate!)
+                                : DateFormat('yy/MM/dd (E)').format(date);
 
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => WrtPicPage(date: formatDate),
+                                builder: (context) =>
+                                    WrtPicPage(date: formatDate),
                                 settings: RouteSettings(arguments: user),
                               ),
                             );
@@ -267,7 +270,9 @@ class _HomePageState extends State<HomePage> {
                             shape: MaterialStateProperty.all<OutlinedBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                side: BorderSide(color: Color.fromARGB(255, 25, 158, 36), width: 2),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 25, 158, 36),
+                                    width: 2),
                               ),
                             ),
                           ),
@@ -282,8 +287,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     );
-
-
                   } else {
                     // final data = documents[0].data() as Map<String, dynamic>;
                     final DocumentSnapshot document = documents[0];
@@ -302,8 +305,8 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                    uID: user.uid, docID: docID, img: img),
+                                builder: (context) =>
+                                    DetailPage(uID: user.uid, docID: docID),
                                 settings: RouteSettings(arguments: user),
                               ),
                             );
@@ -315,19 +318,19 @@ class _HomePageState extends State<HomePage> {
                           left: 20,
                           child: Text(
                             text,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color.fromARGB(255, 4, 0, 255),
                               fontSize: 20,
                             ),
                           ),
-                        ),                        
+                        ),
                         Positioned(
                           top: 20,
                           right: 20,
                           child: Image.asset(
                             "assets/emoji/$emoji.png",
                             width: 30,
-                            color: Color.fromARGB(255, 4, 0, 255),
+                            color: const Color.fromARGB(255, 4, 0, 255),
                           ),
                         ),
                       ],
@@ -337,7 +340,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
         ],
-      ), 
+      ),
     );
   }
 }
