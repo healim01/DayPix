@@ -48,8 +48,8 @@ class _WrtTextPageState extends State<WrtTextPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailPage(
-                        uID: widget.uID, docID: widget.docID, img: widget.img),
+                    builder: (context) =>
+                        DetailPage(uID: widget.uID, docID: widget.docID),
                     settings: RouteSettings(arguments: user),
                   ),
                 );
