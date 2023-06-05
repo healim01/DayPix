@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -17,11 +18,20 @@ class _StartPageState extends State<StartPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(height: 60.0),
+            const SizedBox(height: 80.0),
             const Center(
               child: Text(
                 'DayPix',
                 style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+            Center(
+              child: ClipOval(
+                child: Lottie.network(
+                  'https://assets2.lottiefiles.com/packages/lf20_0zv8teye.json',
+                  height: 200,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             Container(
