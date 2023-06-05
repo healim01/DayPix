@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/home.dart';
 import 'package:daypix/login.dart';
@@ -17,11 +15,11 @@ class DetailPage extends StatelessWidget {
     return FutureBuilder<Object>(
         future: FirebaseFirestore.instance.collection(uID).doc(docID).get(),
         builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) return const Scaffold();
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  // Navigator.pushNamed(context, '/home'); // TODO : 상의하기
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -49,20 +47,30 @@ class DetailPage extends StatelessWidget {
                       const SizedBox(width: 10),
                       Text(
                         snapshot.data['address'],
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       )
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Row(
+                  Row(
                     children: [
-                      SizedBox(width: 10),
-                      Icon(Icons.cloud),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
+                      snapshot.data['weather_icon'] == 800
+                          ? const Icon(Icons.sunny)
+                          : snapshot.data['weather_icon'] / 100 == 8 ||
+                                  snapshot.data['weather_icon'] / 100 == 2
+                              ? const Icon(Icons.cloud)
+                              : snapshot.data['weather_icon'] / 100 == 3 ||
+                                      snapshot.data['weather_icon'] / 100 == 5
+                                  ? const Icon(Icons.beach_access)
+                                  : snapshot.data['weather_icon'] / 100 == 6
+                                      ? const Icon(Icons.ac_unit)
+                                      : const Icon(Icons.cloud),
+                      const SizedBox(width: 10),
                       Text(
-                        "Cloudy",
-                        style: TextStyle(fontSize: 20),
-                      ), // TODO: 날씨 API
+                        snapshot.data['weather'],
+                        style: const TextStyle(fontSize: 20),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -104,23 +112,23 @@ class DetailPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(20),
-                          backgroundColor:
-                              const Color(0xff214894), // <-- Button color
-                          foregroundColor: Colors.white, // <-- Splash color
-                        ),
-                        child: const Icon(Icons.ios_share,
-                            color: Colors.white, size: 30),
-                      )
-                    ],
-                  )
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                  //     ElevatedButton(
+                  //       onPressed: () {},
+                  //       style: ElevatedButton.styleFrom(
+                  //         shape: const CircleBorder(),
+                  //         padding: const EdgeInsets.all(20),
+                  //         backgroundColor:
+                  //             const Color(0xff214894), // <-- Button color
+                  //         foregroundColor: Colors.white, // <-- Splash color
+                  //       ),
+                  //       child: const Icon(Icons.ios_share,
+                  //           color: Colors.white, size: 30),
+                  //     )
+                  //   ],
+                  // )
                 ],
               ),
             ),
@@ -128,84 +136,3 @@ class DetailPage extends StatelessWidget {
         });
   }
 }
-
-// class NetworkHelper {
-//   static final NetworkHelper _instance = NetworkHelper._internal();
-//   factory NetworkHelper() => _instance;
-//   NetworkHelper._internal();
-
-//   Future getData(String url) async {
-//     http.Response response = await http.get(Uri.parse(url));
-
-//     if (response.statusCode == 200) {
-//       return jsonDecode(response.body);
-//     } else {
-//       print(response.statusCode);
-//     }
-//   }
-// }
-
-// class Weather {
-//   double? temp;
-//   double? tempMax;
-//   double? tempMin;
-//   String? condition;
-//   int? conditionId;
-//   int? humidity;
-
-//   Weather({this.temp, this.tempMax, this.tempMin, this.condition, this.conditionId, this.humidity});
-//   }
-  
- 
-// class OpenWeatherService {
-//   final String _apiKey = dotenv.env['openWeatherApiKey']!;
-//   final String _baseUrl = dotenv.env['openWeatherApiBaseUrl']!;
-
-//   Future getWeather() async {
-//     MyLocation myLocation = MyLocation();
-//     developer.log("myLocation called in network");
-//     try {
-//       await myLocation.getMyCurrentLocation();
-//     } catch (e) {
-//       developer.log("error : getLocation ${e.toString()}");
-//     }
-
-//     final weatherData = NetworkHelper().getData(
-//         '$_baseUrl?lat=${myLocation.latitude}&lon=${myLocation.longitude}&appid=$_apiKey&units=metric');
-//     return weatherData;
-//   }
-// }
-  
-// enum LoadingStatus { completed, searching, empty }
-
-// class WeatherProvider with ChangeNotifier {
-//   final Weather _weather =
-//       Weather(temp: 20, condition: "Clouds", conditionId: 200, humidity: 50);
-//   Weather get weather => _weather;
-
-//   LoadingStatus _loadingStatus = LoadingStatus.empty;
-//   LoadingStatus get loadingStatus => _loadingStatus;
-
-//   String _message = "Loading...";
-//   String get message => _message;
-
-//   final OpenWeatherService _openWeatherService = OpenWeatherService();
-
-//   Future<void> getWeather() async {
-//     _loadingStatus = LoadingStatus.searching;
-
-//     final weatherData = await _openWeatherService.getWeather();
-//     if (weatherData == null) {
-//       _loadingStatus = LoadingStatus.empty;
-//       _message = 'Could not find weather. Please try again.';
-//     } else {
-//       _loadingStatus = LoadingStatus.completed;
-//       weather.condition = weatherData['weather'][0]['main'];
-//       weather.conditionId = weatherData['weather'][0]['id'];
-//       weather.humidity = weatherData['main']['humidity'];
-//       weather.temp = weatherData['main']['temp'];
-//       weather.temp = (weather.temp! * 10).roundToDouble() / 10;
-//     }
-
-//     notifyListeners();
-//   }

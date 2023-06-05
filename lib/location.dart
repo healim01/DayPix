@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kpostal/kpostal.dart';
+import 'package:http/http.dart' as http;
 
 class LocationPage extends StatefulWidget {
   final uID;
@@ -15,9 +18,36 @@ class _LocationPageState extends State<LocationPage> {
   String address = '-';
   String kakaoLatitude = '-';
   String kakaoLongitude = '-';
+  String weather = '';
+  int weatherIcon = 0;
+  final _openweatherkey = '434f863823f4faa77e10d6893d0d3b21';
 
   @override
   Widget build(BuildContext context) {
+    Future<void> getWeatherData({
+      required String lat,
+      required String lon,
+    }) async {
+      var str = Uri.parse(
+          'http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$_openweatherkey');
+
+      print(str);
+      var response = await http.get(str);
+
+      if (response.statusCode == 200) {
+        var data = response.body;
+        var dataJson = jsonDecode(data); // string to json
+        // print('data = $data');
+        // print('${dataJson['main']['temp']}');
+        print('${dataJson['weather'][0]['main']}');
+        weather = dataJson['weather'][0]['main'];
+        print('${dataJson['weather'][0]['id']}');
+        weatherIcon = dataJson['weather'][0]['id'];
+      } else {
+        print('response status code = ${response.statusCode}');
+      }
+    }
+
     return KpostalView(
       useLocalServer: true,
       localPort: 8080,
@@ -32,6 +62,8 @@ class _LocationPageState extends State<LocationPage> {
           print(kakaoLatitude);
           print(kakaoLongitude);
 
+          await getWeatherData(lat: kakaoLatitude, lon: kakaoLongitude);
+
           await FirebaseFirestore.instance
               .collection(widget.uID)
               .doc(widget.docID)
@@ -39,97 +71,11 @@ class _LocationPageState extends State<LocationPage> {
             "address": address,
             "lat": kakaoLatitude,
             "lon": kakaoLongitude,
+            "weather_icon": weatherIcon,
+            "weather": weather
           }).catchError((error) => print("Failed to add user: $error"));
-
-          print("??");
         });
       },
-    );
-  }
-}
-
-class Loca extends StatefulWidget {
-  final docID;
-  Loca({Key? key, required this.docID}) : super(key: key);
-
-  @override
-  _LocaState createState() => _LocaState();
-}
-
-class _LocaState extends State<Loca> {
-  String postCode = '-';
-  String address = '-';
-  String latitude = '-';
-  String longitude = '-';
-  String kakaoLatitude = '-';
-  String kakaoLongitude = '-';
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.docID),
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => KpostalView(
-                      useLocalServer: true,
-                      localPort: 1024,
-                      // kakaoKey: '{Add your KAKAO DEVELOPERS JS KEY}',
-                      callback: (Kpostal result) {
-                        setState(() {
-                          this.postCode = result.postCode;
-                          this.address = result.address;
-                          this.latitude = result.latitude.toString();
-                          this.longitude = result.longitude.toString();
-                          this.kakaoLatitude = result.kakaoLatitude.toString();
-                          this.kakaoLongitude =
-                              result.kakaoLongitude.toString();
-                        });
-                      },
-                    ),
-                  ),
-                );
-              },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue)),
-              child: Text(
-                'Search Address',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(40.0),
-              child: Column(
-                children: [
-                  Text('postCode',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('result: ${this.postCode}'),
-                  Text('address',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('result: ${this.address}'),
-                  Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                      'latitude: ${this.latitude} / longitude: ${this.longitude}'),
-                  Text('through KAKAO Geocoder',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                      'latitude: ${this.kakaoLatitude} / longitude: ${this.kakaoLongitude}'),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
