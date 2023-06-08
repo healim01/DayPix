@@ -2,12 +2,14 @@ import 'package:daypix/map.dart';
 // import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/detail.dart';
+import 'package:daypix/notification.dart';
 import 'package:daypix/profile.dart';
 import 'package:daypix/search.dart';
 import 'package:daypix/wrt_pic.dart';
 import 'package:daypix/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -25,6 +27,16 @@ class _HomePageState extends State<HomePage> {
   DateTime date = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
   DateTime? selectedDate;
+
+  @override
+  void initState() {
+    FlutterLocalNotification.init();
+
+    // 3초 후 권한 요청
+    Future.delayed(const Duration(seconds: 3),
+        FlutterLocalNotification.requestNotificationPermission());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +161,8 @@ class _HomePageState extends State<HomePage> {
                   color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Search'),
               onTap: () {
+                FlutterLocalNotification.showNotification();
+                // child: const Text("알림 보내기"),
                 // Navigate to search page
               },
             ),
