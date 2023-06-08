@@ -64,39 +64,5 @@ class MapPageState extends State<MapPage> {
         );
       },
     );
-
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: const Text("why?"),
-    //     ),
-    //     body: Placeholder()
-    //     // GoogleMap(
-    //     //   markers: Set.from(markers),
-    //     //   initialCameraPosition: _kGooglePlex,
-    //     //   onMapCreated: (GoogleMapController controller) {
-    //     //     print("I'm map");
-    //     //     _controller.complete(controller);
-    //     //   },
-    //     // ),
-    //     );
-
-    // return FutureBuilder<Object>(
-    //     future: FirebaseFirestore.instance.collection(widget.uid).get(),
-    //     builder: (context, AsyncSnapshot snapshot) {
-    //       print(snapshot.data['lat']);
-    //       return Scaffold(
-    //         appBar: AppBar(
-    //           title: const Text("why?"),
-    //         ),
-    //         body: GoogleMap(
-    //           markers: Set.from(markers),
-    //           initialCameraPosition: _kGooglePlex,
-    //           onMapCreated: (GoogleMapController controller) {
-    //             print("I'm map");
-    //             _controller.complete(controller);
-    //           },
-    //         ),
-    //       );
-    //     });
   }
 }

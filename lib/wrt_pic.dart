@@ -160,6 +160,8 @@ class _WrtPicPageState extends State<WrtPicPage> {
                                   'emoji': '',
                                   "lat": "",
                                   "lon": "",
+                                  "weather_icon": 0,
+                                  "weather": ""
                                 })
                                 .catchError((error) =>
                                     print("Failed to add user: $error"))
