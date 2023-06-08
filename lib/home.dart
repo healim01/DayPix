@@ -29,8 +29,10 @@ class _HomePageState extends State<HomePage> {
   DateTime? selectedDate;
 
   int calculateDifference(DateTime date) {
-      DateTime now = DateTime.now();
-      return DateTime(date.year, date.month, date.day).difference(DateTime(now.year, now.month, now.day)).inDays;
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
   }
 
   @override
@@ -253,10 +255,11 @@ class _HomePageState extends State<HomePage> {
                   return const Text('데이터 가져오기 중 오류가 발생했습니다.');
                 } else {
                   final documents = snapshot.data!;
-                  if (documents.isEmpty) {          
-                    // 오늘이 아니면서 오늘 이후일 경우      
-                    if ((!selectedDate!.isBefore(DateTime.now())) && calculateDifference(selectedDate!)!=0) {
-                    // if ((!selectedDate!.isBefore(DateTime.now()))) {
+                  if (documents.isEmpty) {
+                    // 오늘이 아니면서 오늘 이후일 경우
+                    if ((!selectedDate!.isBefore(DateTime.now())) &&
+                        calculateDifference(selectedDate!) != 0) {
+                      // if ((!selectedDate!.isBefore(DateTime.now()))) {
                       return Column(
                         children: [
                           const SizedBox(height: 50),
@@ -299,56 +302,55 @@ class _HomePageState extends State<HomePage> {
                               'https://assets6.lottiefiles.com/temp/lf20_BnhDqb.json',
                               height: 200,
                               fit: BoxFit.fill,
-                            ),
+                            ),         
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          '아직 다이어리가 없어요~ ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () {
-                            String formatDate = selectedDate != null
-                                ? DateFormat('yy/MM/dd (E)')
-                                    .format(selectedDate!)
-                                : DateFormat('yy/MM/dd (E)').format(date);
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    WrtPicPage(date: formatDate),
-                                settings: RouteSettings(arguments: user),
-                              ),
-                            );
-                          },
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: const BorderSide(
-                                    color: Color.fromARGB(255, 25, 158, 36),
-                                    width: 2),
-                              ),
-                            ),
-                          ),
-                          child: const Text(
-                            '지금 다이어리 쓰러 가기!',
+                          const SizedBox(height: 20),
+                          const Text(
+                            '아직 다이어리가 없어요~ ',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Color.fromARGB(255, 25, 158, 36),
+                              fontSize: 20,
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }
+                          const SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () {
+                              String formatDate = selectedDate != null
+                                  ? DateFormat('yy/MM/dd (E)')
+                                      .format(selectedDate!)
+                                  : DateFormat('yy/MM/dd (E)').format(date);
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      WrtPicPage(date: formatDate),
+                                  settings: RouteSettings(arguments: user),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: const BorderSide(
+                                      color: Color.fromARGB(255, 25, 158, 36),
+                                      width: 2),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              '지금 다이어리 쓰러 가기!',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 25, 158, 36),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                   } else {
                     // final data = documents[0].data() as Map<String, dynamic>;
                     final DocumentSnapshot document = documents[0];
@@ -374,13 +376,13 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                           child: Container(
-                              width: MediaQuery.of(context).size.width, 
-                              height: 350, 
-                              child: Image.network(
-                                img,
-                                fit: BoxFit.cover, // 이미지를 박스에 맞추기 위해 cover로 설정
-                              ),
+                            width: MediaQuery.of(context).size.width,
+                            height: 350,
+                            child: Image.network(
+                              img,
+                              fit: BoxFit.cover, // 이미지를 박스에 맞추기 위해 cover로 설정
                             ),
+                          ),
                         ),
                         Positioned(
                           bottom: 20,
