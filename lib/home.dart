@@ -161,9 +161,18 @@ class _HomePageState extends State<HomePage> {
                   color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Search'),
               onTap: () {
-                FlutterLocalNotification.showNotification();
-                // child: const Text("알림 보내기"),
-                // Navigate to search page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchPage(),
+                    settings: RouteSettings(
+                      arguments: user,
+                    ),
+                  ),
+                );
+//                 FlutterLocalNotification.showNotification();
+//                 // child: const Text("알림 보내기"),
+//                 // Navigate to search page
               },
             ),
             ListTile(
