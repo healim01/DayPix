@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daypix/detail.dart';
 import 'package:daypix/home.dart';
 import 'package:daypix/profile.dart';
 import 'package:daypix/login.dart';
@@ -12,19 +13,23 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 // TODO :search 에서 결과 보여줄 때, 글씨 bold, black, text만 키우기
+// TODO :search 에서 원하는 결과 제대로 보여주기 
+
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   List<DocumentSnapshot> _searchResults = [];
 
   Future<void> _getPostsBySearchTerm(String searchTerm, UserModel user) async {
+    print(searchTerm);
     try {
       final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection(user.uid)
-          .where('text', isGreaterThanOrEqualTo: searchTerm)
+          .where('text', isEqualTo: searchTerm)
           .get();
-      // print(user.uid);
+      
       setState(() {
         _searchResults = querySnapshot.docs;
+        print(_searchResults);
       });
     } catch (e) {
       print('데이터 가져오기 중 오류가 발생했습니다: $e');
@@ -114,7 +119,14 @@ class _SearchPageState extends State<SearchPage> {
                           InkWell(
                             onTap: () {
                               print("detail page let's go~");
-                              // TODO : detail page 가는거 하기
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailPage(uID: user.uid, docID: docID),
+                                  settings: RouteSettings(arguments: user),
+                                ),
+                              );
                             },
                             child: Image.network(img),
                           ),

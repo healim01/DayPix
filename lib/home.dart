@@ -28,6 +28,11 @@ class _HomePageState extends State<HomePage> {
   CalendarFormat calendarFormat = CalendarFormat.month;
   DateTime? selectedDate;
 
+  int calculateDifference(DateTime date) {
+      DateTime now = DateTime.now();
+      return DateTime(date.year, date.month, date.day).difference(DateTime(now.year, now.month, now.day)).inDays;
+  }
+
   @override
   void initState() {
     FlutterLocalNotification.init();
@@ -170,9 +175,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 );
-//                 FlutterLocalNotification.showNotification();
-//                 // child: const Text("알림 보내기"),
-//                 // Navigate to search page
               },
             ),
             ListTile(
@@ -239,6 +241,7 @@ class _HomePageState extends State<HomePage> {
               });
             },
           ),
+                    
           if (selectedDate != null)
             FutureBuilder<List<DocumentSnapshot>>(
               future: getPostByDate(
@@ -250,8 +253,43 @@ class _HomePageState extends State<HomePage> {
                   return const Text('데이터 가져오기 중 오류가 발생했습니다.');
                 } else {
                   final documents = snapshot.data!;
-                  if (documents.isEmpty) {
-                    // selectedDate가 null인 경우에도 이 부분이 실행되도록
+                  if (documents.isEmpty) {          
+                    // 오늘이 아니면서 오늘 이후일 경우      
+                    if ((!selectedDate!.isBefore(DateTime.now())) && calculateDifference(selectedDate!)!=0) {
+                    // if ((!selectedDate!.isBefore(DateTime.now()))) {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 50),
+                          Center(
+                            child: ClipOval(
+                              child: Lottie.network(
+                                'https://assets7.lottiefiles.com/packages/lf20_WWifl0Qmyq.json',
+                                height: 200,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          const Text(
+                            '미래 일기는 작성할 수 없어요~',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text(
+                            '조금만 기다려주세요~',
+                            style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      );
+                  } 
+                  else {
                     return Column(
                       children: [
                         const SizedBox(height: 30),
@@ -310,6 +348,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     );
+                  }
                   } else {
                     // final data = documents[0].data() as Map<String, dynamic>;
                     final DocumentSnapshot document = documents[0];
@@ -318,7 +357,7 @@ class _HomePageState extends State<HomePage> {
                     final String img = data['img'];
                     final String text = data['text'];
                     final String emoji = data['emoji'];
-
+                  
                     return Stack(
                       children: [
                         InkWell(
@@ -334,7 +373,14 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
-                          child: Image.network(img),
+                          child: Container(
+                              width: MediaQuery.of(context).size.width, 
+                              height: 350, 
+                              child: Image.network(
+                                img,
+                                fit: BoxFit.cover, // 이미지를 박스에 맞추기 위해 cover로 설정
+                              ),
+                            ),
                         ),
                         Positioned(
                           bottom: 20,
