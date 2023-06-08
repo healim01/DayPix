@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:daypix/wrt_text.dart';
+import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 
 final storageRef = FirebaseStorage.instance.ref();
 
@@ -20,6 +21,11 @@ class WrtPicPage extends StatefulWidget {
   State<WrtPicPage> createState() => _WrtPicPageState();
 }
 
+final ImageLabelerOptions options =
+    ImageLabelerOptions(confidenceThreshold: 0.5);
+final imageLabeler = ImageLabeler(options: options);
+List<String> labelTexts = [];
+
 class _WrtPicPageState extends State<WrtPicPage> {
   var imagePath = '';
   var imgURL = '';
@@ -27,6 +33,7 @@ class _WrtPicPageState extends State<WrtPicPage> {
 
   File? _imgGallery;
   Future pickImageGallery() async {
+    labelTexts = [];
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
@@ -34,6 +41,15 @@ class _WrtPicPageState extends State<WrtPicPage> {
       setState(
         () => _imgGallery = File(image.path),
       );
+      final List<ImageLabel> labels =
+          await imageLabeler.processImage(InputImage.fromFilePath(image.path));
+      for (ImageLabel label in labels) {
+        final String text = label.label;
+        final int index = label.index;
+        final double confidence = label.confidence;
+        labelTexts.add(text);
+      }
+      print(labelTexts);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -45,6 +61,8 @@ class _WrtPicPageState extends State<WrtPicPage> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
       imagePath = image.name;
+      print("before labeling");
+
       setState(() => _imgCamera = File(image.path));
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
@@ -93,6 +111,7 @@ class _WrtPicPageState extends State<WrtPicPage> {
                       IconButton(
                         onPressed: () async {
                           await pickImageGallery();
+
                           final ref =
                               storageRef.child('images').child(imagePath);
 
@@ -150,7 +169,7 @@ class _WrtPicPageState extends State<WrtPicPage> {
                           onPressed: () async {
                             final userID = FirebaseAuth.instance.currentUser;
                             print(imgURL);
-
+                            // _processCameraImage(imgURL);
                             await FirebaseFirestore.instance
                                 .collection(userID!.uid)
                                 .add({
@@ -160,8 +179,7 @@ class _WrtPicPageState extends State<WrtPicPage> {
                                   'emoji': '',
                                   "lat": "",
                                   "lon": "",
-                                  "weather_icon": 0,
-                                  "weather": ""
+                                  "labels": labelTexts,
                                 })
                                 .catchError((error) =>
                                     print("Failed to add user: $error"))
