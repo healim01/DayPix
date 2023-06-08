@@ -243,7 +243,6 @@ class _HomePageState extends State<HomePage> {
               });
             },
           ),
-                    
           if (selectedDate != null)
             FutureBuilder<List<DocumentSnapshot>>(
               future: getPostByDate(
@@ -291,18 +290,18 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: 20),
                         ],
                       );
-                  } 
-                  else {
-                    return Column(
-                      children: [
-                        const SizedBox(height: 30),
-                        Center(
-                          child: ClipOval(
-                            child: Lottie.network(
-                              'https://assets6.lottiefiles.com/temp/lf20_BnhDqb.json',
-                              height: 200,
-                              fit: BoxFit.fill,
-                            ),         
+                    } else {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 30),
+                          Center(
+                            child: ClipOval(
+                              child: Lottie.network(
+                                'https://assets6.lottiefiles.com/temp/lf20_BnhDqb.json',
+                                height: 200,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 20),
                           const Text(
@@ -359,7 +358,7 @@ class _HomePageState extends State<HomePage> {
                     final String img = data['img'];
                     final String text = data['text'];
                     final String emoji = data['emoji'];
-                  
+
                     return Stack(
                       children: [
                         InkWell(
@@ -390,9 +389,9 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             text,
                             style: const TextStyle(
-                              color: Color.fromARGB(255, 4, 0, 255),
-                              fontSize: 20,
-                            ),
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                         Positioned(
@@ -400,8 +399,8 @@ class _HomePageState extends State<HomePage> {
                           right: 20,
                           child: Image.asset(
                             "assets/emoji/$emoji.png",
-                            width: 30,
-                            color: const Color.fromARGB(255, 4, 0, 255),
+                            width: 40,
+                            color: Colors.white,
                           ),
                         ),
                       ],
