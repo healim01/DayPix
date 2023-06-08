@@ -18,20 +18,27 @@ class DetailPage extends StatelessWidget {
           if (snapshot.data == null) return const Scaffold();
           return Scaffold(
             appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                      settings: RouteSettings(arguments: user),
+              leading: Row(
+                children: [
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                          settings: RouteSettings(arguments: user),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.home_outlined,
+                      size: 30,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.home_outlined,
-                  size: 40,
-                ),
+                  ),
+                ],
               ),
               title: Text(snapshot.data['date']),
             ),
