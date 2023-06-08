@@ -55,10 +55,10 @@ class FlutterLocalNotification {
 
     makeDate(hour, min, sec) {
       var now = tz.TZDateTime.now(tz.local);
+      print(now);
       var when =
           tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, min, sec);
-      if (when.isBefore(now)) {
-        print("object");
+      if (when.isAfter(now)) {
         return when.add(const Duration(days: 1));
       } else {
         return when;
@@ -69,20 +69,11 @@ class FlutterLocalNotification {
       0,
       'Daypix',
       '오늘 하루는 어떠셨나요? 데이픽스에 적어보세요!',
-      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-      makeDate(4, 20, 0),
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)), // 확인용
+      // makeDate(16, 50, 0), // 밤 10시로 만들어놓음
       notificationDetails,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
-
-    // await flutterLocalNotificationsPlugin.showDailyAtTime(
-    //   0,
-    //   '매일 똑같은 시간의 Notification',
-    //   '매일 똑같은 시간의 Notification 내용',
-    //   time,
-    //   detail,
-    //   payload: 'Hello Flutter',
-    // );
   }
 }
