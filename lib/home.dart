@@ -168,9 +168,15 @@ class _HomePageState extends State<HomePage> {
                   color: Color.fromARGB(255, 33, 72, 148)),
               title: const Text('Search'),
               onTap: () {
-                FlutterLocalNotification.showNotification();
-                // child: const Text("알림 보내기"),
-                // Navigate to search page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchPage(),
+                    settings: RouteSettings(
+                      arguments: user,
+                    ),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -237,6 +243,7 @@ class _HomePageState extends State<HomePage> {
               });
             },
           ),
+                    
           if (selectedDate != null)
             FutureBuilder<List<DocumentSnapshot>>(
               future: getPostByDate(
@@ -284,18 +291,18 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: 20),
                         ],
                       );
-                    } else {
-                      return Column(
-                        children: [
-                          const SizedBox(height: 30),
-                          Center(
-                            child: ClipOval(
-                              child: Lottie.network(
-                                'https://assets6.lottiefiles.com/temp/lf20_BnhDqb.json',
-                                height: 200,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                  } 
+                  else {
+                    return Column(
+                      children: [
+                        const SizedBox(height: 30),
+                        Center(
+                          child: ClipOval(
+                            child: Lottie.network(
+                              'https://assets6.lottiefiles.com/temp/lf20_BnhDqb.json',
+                              height: 200,
+                              fit: BoxFit.fill,
+                            ),         
                           ),
                           const SizedBox(height: 20),
                           const Text(
@@ -352,7 +359,7 @@ class _HomePageState extends State<HomePage> {
                     final String img = data['img'];
                     final String text = data['text'];
                     final String emoji = data['emoji'];
-
+                  
                     return Stack(
                       children: [
                         InkWell(
