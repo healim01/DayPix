@@ -19,42 +19,6 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   List<DocumentSnapshot> _searchResults = [];
 
-  /*
-  Future<void> _getPostsBySearchTerm(String searchTerm, UserModel user) async {
-    print(searchTerm);
-    try {
-      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection(user.uid)
-          .where('text', isEqualTo: searchTerm)
-          .get();
-
-      setState(() {
-        _searchResults = querySnapshot.docs;
-        print(_searchResults);
-      });
-    } catch (e) {
-      print('데이터 가져오기 중 오류가 발생했습니다: $e');
-    }
-  }
-
-  Future<void> _getPostsBySearchLabel(String searchLabel, UserModel user) async {
-    print(searchLabel);
-    try {
-      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection(user.uid)
-          .where('labels', arrayContains: searchLabel)
-          .get();
-
-      setState(() {
-        _searchResults = querySnapshot.docs;
-        print(_searchResults);
-      });
-    } catch (e) {
-      print('데이터 가져오기 중 오류가 발생했습니다: $e');
-    }
-  }
-  */
-
   Future<void> _getPostsBySearch(String searchQuery, UserModel user) async {
     print(searchQuery);
     try {
@@ -170,7 +134,12 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                               );
                             },
-                            child: Image.network(img),
+                            child: Image.network(
+                              img,
+                              fit: BoxFit.fill,
+                              width: MediaQuery.of(context).size.width,
+                              height: 400.0,
+                            ),
                           ),
                           Positioned(
                             bottom: 20,
@@ -178,8 +147,9 @@ class _SearchPageState extends State<SearchPage> {
                             child: Text(
                               text,
                               style: const TextStyle(
-                                color: Color.fromARGB(255, 3, 0, 181),
-                                fontSize: 20,
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -189,7 +159,7 @@ class _SearchPageState extends State<SearchPage> {
                             child: Image.asset(
                               "assets/emoji/$emoji.png",
                               width: 30,
-                              color: Color.fromARGB(255, 3, 0, 181),
+                              color: Colors.white,
                             ),
                           ),
                           Positioned(
@@ -198,8 +168,9 @@ class _SearchPageState extends State<SearchPage> {
                             child: Text(
                               date,
                               style: const TextStyle(
-                                color: Color.fromARGB(255, 3, 0, 181),
+                                color: Colors.white,
                                 fontSize: 20,
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
                           ),

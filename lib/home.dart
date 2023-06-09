@@ -358,6 +358,7 @@ class _HomePageState extends State<HomePage> {
                     final String img = data['img'];
                     final String text = data['text'];
                     final String emoji = data['emoji'];
+                    final String date = data['date'];
 
                     return Stack(
                       children: [
@@ -401,6 +402,18 @@ class _HomePageState extends State<HomePage> {
                             "assets/emoji/$emoji.png",
                             width: 40,
                             color: Colors.white,
+                          ),
+                        ),
+                        Positioned(
+                          top: 20,
+                          left: 20,
+                          child: Text(
+                            date,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
                       ],
