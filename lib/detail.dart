@@ -107,9 +107,8 @@ class DetailPage extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 15,
-                        left: 50,
-                        right: 50,
+                        bottom: 20,
+                        left: 20,
                         child: Text(
                           snapshot.data['text'],
                           style: const TextStyle(
@@ -122,19 +121,22 @@ class DetailPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
+                    alignment: WrapAlignment.start, // 가운데 정렬
                     children: [
                       for (String label in items)
-                        Text(
-                          ' #$label ',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.blue,
+                        Padding(
+                          padding: EdgeInsets.all(4), // 위젯 사이 간격을 위해 Padding 추가
+                          child: Text(
+                            '#$label ',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.blue,
+                            ),
                           ),
-                        )
+                        ),
                     ],
                   )
                 ],
