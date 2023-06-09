@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/home.dart';
 import 'package:daypix/login.dart';
@@ -16,6 +18,7 @@ class DetailPage extends StatelessWidget {
         future: FirebaseFirestore.instance.collection(uID).doc(docID).get(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) return const Scaffold();
+          List<String> items = List.from(snapshot.data['labels']);
           return Scaffold(
             appBar: AppBar(
               leading: Row(
@@ -119,23 +122,21 @@ class DetailPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     ElevatedButton(
-                  //       onPressed: () {},
-                  //       style: ElevatedButton.styleFrom(
-                  //         shape: const CircleBorder(),
-                  //         padding: const EdgeInsets.all(20),
-                  //         backgroundColor:
-                  //             const Color(0xff214894), // <-- Button color
-                  //         foregroundColor: Colors.white, // <-- Splash color
-                  //       ),
-                  //       child: const Icon(Icons.ios_share,
-                  //           color: Colors.white, size: 30),
-                  //     )
-                  //   ],
-                  // )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (String label in items)
+                        Text(
+                          ' #$label ',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.blue,
+                          ),
+                        )
+                    ],
+                  )
                 ],
               ),
             ),
