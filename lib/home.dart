@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DateTime date = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
-  DateTime? selectedDate;
+  DateTime? selectedDate = DateTime.now();
 
   int calculateDifference(DateTime date) {
     DateTime now = DateTime.now();

@@ -13,12 +13,13 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 // TODO :search 에서 결과 보여줄 때, 글씨 bold, black, text만 키우기
-// TODO :search 에서 원하는 결과 제대로 보여주기 
+// TODO :search 에서 원하는 결과 제대로 보여주기
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   List<DocumentSnapshot> _searchResults = [];
 
+  /*
   Future<void> _getPostsBySearchTerm(String searchTerm, UserModel user) async {
     print(searchTerm);
     try {
@@ -26,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
           .collection(user.uid)
           .where('text', isEqualTo: searchTerm)
           .get();
-      
+
       setState(() {
         _searchResults = querySnapshot.docs;
         print(_searchResults);
@@ -36,9 +37,52 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
+  Future<void> _getPostsBySearchLabel(String searchLabel, UserModel user) async {
+    print(searchLabel);
+    try {
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection(user.uid)
+          .where('labels', arrayContains: searchLabel)
+          .get();
+
+      setState(() {
+        _searchResults = querySnapshot.docs;
+        print(_searchResults);
+      });
+    } catch (e) {
+      print('데이터 가져오기 중 오류가 발생했습니다: $e');
+    }
+  }
+  */
+
+  Future<void> _getPostsBySearch(String searchQuery, UserModel user) async {
+    print(searchQuery);
+    try {
+      // labels 키워드 검색
+      final QuerySnapshot querySnapshot1 = await FirebaseFirestore.instance
+          .collection(user.uid)
+          .where('labels', arrayContains: searchQuery)
+          .get();
+
+      // text 내용 검색
+      final QuerySnapshot querySnapshot2 = await FirebaseFirestore.instance
+          .collection(user.uid)
+          .where('text', isEqualTo: searchQuery)
+          .get();
+
+      setState(() {
+        _searchResults = [...querySnapshot1.docs, ...querySnapshot2.docs];
+        print(_searchResults);
+      });
+    } catch (e) {
+      print('데이터 가져오기 중 오류가 발생했습니다: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final UserModel user = ModalRoute.of(context)!.settings.arguments as UserModel;
+    final UserModel user =
+        ModalRoute.of(context)!.settings.arguments as UserModel;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,9 +98,7 @@ class _SearchPageState extends State<SearchPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const HomePage(),
-                    settings: RouteSettings(
-                      arguments: user
-                    ),
+                    settings: RouteSettings(arguments: user),
                   ),
                 );
               },
@@ -64,7 +106,7 @@ class _SearchPageState extends State<SearchPage> {
           },
         ),
         centerTitle: true,
-        title: const Text('Daypix'),        
+        title: const Text('Daypix'),
       ),
       body: Column(
         children: [
@@ -94,7 +136,7 @@ class _SearchPageState extends State<SearchPage> {
                 onPressed: () {
                   final String searchTerm = _searchController.text.trim();
                   if (searchTerm.isNotEmpty) {
-                    _getPostsBySearchTerm(searchTerm, user);
+                    _getPostsBySearch(searchTerm, user);
                   }
                 },
               ),
@@ -165,31 +207,30 @@ class _SearchPageState extends State<SearchPage> {
                       );
                     },
                   )
-                : 
-                Column(
-                  children :[
-                    const SizedBox(height: 100),
-                    Center(
-                      child: ClipOval(
-                        child: Lottie.network(
-                          'https://assets7.lottiefiles.com/packages/lf20_MrIjH2.json',
-                          height: 200,
-                          fit: BoxFit.fill,
+                : Column(
+                    children: [
+                      const SizedBox(height: 100),
+                      Center(
+                        child: ClipOval(
+                          child: Lottie.network(
+                            'https://assets7.lottiefiles.com/packages/lf20_MrIjH2.json',
+                            height: 200,
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Center(
-                      child: Text(
-                        '결과가 없습니다.',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(height: 20),
+                      const Center(
+                        child: Text(
+                          '결과가 없습니다.',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
           ),
         ],
       ),
