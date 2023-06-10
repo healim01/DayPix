@@ -1,6 +1,6 @@
 # DayPix
 
-A new Flutter project.
+사진 일기 작성 앱
 
 ## Getting Started
 
