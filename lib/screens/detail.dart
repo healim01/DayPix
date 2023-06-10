@@ -1,8 +1,8 @@
 // import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:daypix/home.dart';
-import 'package:daypix/login.dart';
+import 'package:daypix/screens/home.dart';
+import 'package:daypix/screens/login.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {

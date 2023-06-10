@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:daypix/location.dart';
-import 'package:daypix/login.dart';
+import 'package:daypix/screens/location.dart';
+import 'package:daypix/screens/login.dart';
 import 'package:flutter/material.dart';
 
-import 'package:daypix/detail.dart';
+import 'package:daypix/screens/detail.dart';
 // import 'package:daypix/location.dart';
 
 var isText = 0;
