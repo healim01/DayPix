@@ -69,8 +69,8 @@ class FlutterLocalNotification {
       0,
       'Daypix',
       '오늘 하루는 어떠셨나요? 데이픽스에 적어보세요!',
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)), // 확인용
-      // makeDate(16, 50, 0), // 밤 10시로 만들어놓음
+      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)), // 확인용
+      makeDate(22, 00, 0), // 밤 10시로 만들어놓음
       notificationDetails,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
