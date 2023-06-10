@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/screens/detail.dart';
 import 'package:daypix/screens/home.dart';
-import 'package:daypix/screens/profile.dart';
 import 'package:daypix/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -12,8 +11,6 @@ class SearchPage extends StatefulWidget {
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
-// TODO :search 에서 결과 보여줄 때, 글씨 bold, black, text만 키우기
-// TODO :search 에서 원하는 결과 제대로 보여주기
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
@@ -89,8 +86,6 @@ class _SearchPageState extends State<SearchPage> {
                           color: Color.fromARGB(255, 3, 0, 181),
                         ),
                       ),
-                      // filled: true,
-                      // fillColor: Color.fromARGB(255, 191, 203, 231), // 배경색을 변경하려면 여기에 지정하세요
                     ),
                   ),
                 ),

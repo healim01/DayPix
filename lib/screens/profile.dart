@@ -1,11 +1,9 @@
 import 'package:daypix/utils/notification.dart';
-import 'package:daypix/screens/start.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'login.dart';
-import 'home.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -23,16 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
   int? minutes;
   String? formattedTimeDifference;
   String? formattedBeginDate;
-
-  // timestamp 기준으로 Difference 구한 것
-  // Duration calculateTimeDifference(Timestamp? registeredDate) {
-  //   if (registeredDate != null) {
-  //     DateTime now = DateTime.now();
-  //     DateTime registeredDateTime = registeredDate.toDate();
-  //     return now.difference(registeredDateTime);
-  //   }
-  //   return Duration.zero;
-  // }
 
   // 날짜 기준으로 Difference 구한 것
   Duration calculateTimeDifference(Timestamp? registeredDate) {
@@ -92,11 +80,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final UserModel user = ModalRoute.of(context)!.settings.arguments as UserModel;
     final UserModel routeUser =
         ModalRoute.of(context)!.settings.arguments as UserModel;
     user = routeUser; // routeUser를 user에 할당하여 초기값 설정
-    // readUserData(user.uid);
 
     if (registeredDate == null) {
       readUserData(user.uid);
@@ -140,9 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 200,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
-                  // fit: BoxFit.cover,
-                  image: NetworkImage(user.url)),
+              image: DecorationImage(image: NetworkImage(user.url)),
             ),
           ),
           const SizedBox(height: 20.0),
@@ -166,19 +150,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: 15.0),
-          // Switch(
-          //   // This bool value toggles the switch.
-          //   value: light,
-          //   activeColor: Colors.red,
-          //   onChanged: (bool value) {
-          //     print(value);
-          //     // This is called when the user toggles the switch.
-          //     setState(() {
-          //       light = value;
-          //       print(light);
-          //     });
-          //   },
-          // ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -192,8 +163,6 @@ class _ProfilePageState extends State<ProfilePage> {
               SwitchExample(),
             ],
           ),
-          // FlutterLocalNotification.showNotification();
-          // child: const Text("알림 보내기"),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
@@ -219,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: 280.0),
-          Container(
+          SizedBox(
             width: 80,
             child: Align(
               alignment: Alignment.centerRight,
@@ -263,7 +232,6 @@ class _SwitchExampleState extends State<SwitchExample> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-      // This bool value toggles the switch.
       value: light,
       activeColor: Colors.blue,
       onChanged: (bool value) {

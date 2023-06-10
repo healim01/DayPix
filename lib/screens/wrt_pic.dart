@@ -169,7 +169,6 @@ class _WrtPicPageState extends State<WrtPicPage> {
                           onPressed: () async {
                             final userID = FirebaseAuth.instance.currentUser;
                             print(imgURL);
-                            // _processCameraImage(imgURL);
                             await FirebaseFirestore.instance
                                 .collection(userID!.uid)
                                 .add({

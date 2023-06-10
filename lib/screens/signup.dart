@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'home.dart';
-import 'login.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -14,7 +12,6 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // FirebaseUser _user; // Firebase에 로그인 된 사용자
 
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
@@ -22,7 +19,6 @@ class _SignupPageState extends State<SignupPage> {
   final _confirmpasswordController = TextEditingController();
   final _emailController = TextEditingController();
 
-  // String? id = "";
   String? name = "";
   String? email = "";
   String? url = "";
@@ -56,14 +52,14 @@ class _SignupPageState extends State<SignupPage> {
       if (e.code == 'weak-password') {
         print('The password provided is too weak');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('The password provided is too weak'),
           ),
         );
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('The account already exists for that email'),
           ),
         );
@@ -71,7 +67,7 @@ class _SignupPageState extends State<SignupPage> {
         print(e.code);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Please retry ; " + e.code),
+            content: Text("Please retry ; ${e.code}"),
           ),
         );
       }
@@ -81,12 +77,6 @@ class _SignupPageState extends State<SignupPage> {
     return false;
   }
 
-  // Firebase로부터 로그아웃
-  // signOut() async {
-  //   await _auth.signOut();
-  // await FirebaseAuth.instance.signOut();
-  //   // setUser(null);
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

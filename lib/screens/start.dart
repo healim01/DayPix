@@ -9,12 +9,11 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color.fromRGBO(33, 72, 148, 1),
+        color: const Color.fromRGBO(33, 72, 148, 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -22,7 +21,10 @@ class _StartPageState extends State<StartPage> {
             const Center(
               child: Text(
                 'DayPix',
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
             Center(
@@ -37,7 +39,7 @@ class _StartPageState extends State<StartPage> {
             Container(
               width: 300,
               height: 50,
-              margin: EdgeInsets.only(bottom: 100),
+              margin: const EdgeInsets.only(bottom: 100),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
