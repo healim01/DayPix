@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:daypix/start.dart';
-import 'package:daypix/home.dart';
-import 'package:daypix/login.dart';
-import 'package:daypix/signup.dart';
-import 'package:daypix/profile.dart';
+import 'package:daypix/screens/start.dart';
+import 'package:daypix/screens/home.dart';
+import 'package:daypix/screens/login.dart';
+import 'package:daypix/screens/signup.dart';
+import 'package:daypix/screens/profile.dart';
 
 class DayPixApp extends StatelessWidget {
   const DayPixApp({Key? key}) : super(key: key);

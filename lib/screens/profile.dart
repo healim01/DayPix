@@ -1,5 +1,5 @@
-import 'package:daypix/notification.dart';
-import 'package:daypix/start.dart';
+import 'package:daypix/utils/notification.dart';
+import 'package:daypix/screens/start.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

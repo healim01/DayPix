@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:daypix/app.dart';
-import 'package:daypix/firebase_options.dart';
+import 'package:daypix/widgets/app.dart';
+import 'package:daypix/utils/firebase_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
