@@ -37,8 +37,6 @@ class _LocationPageState extends State<LocationPage> {
       if (response.statusCode == 200) {
         var data = response.body;
         var dataJson = jsonDecode(data); // string to json
-        // print('data = $data');
-        // print('${dataJson['main']['temp']}');
         print('${dataJson['weather'][0]['main']}');
         weather = dataJson['weather'][0]['main'];
         print('${dataJson['weather'][0]['id']}');

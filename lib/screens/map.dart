@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/screens/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -21,10 +19,6 @@ class MapPageState extends State<MapPage> {
     target: LatLng(36.1013342, 129.3909425),
     zoom: 14.4746,
   );
-
-  // final String documentId;
-
-  // Map(this.documentId);
 
   @override
   Widget build(BuildContext context) {

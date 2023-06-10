@@ -240,11 +240,6 @@ class _LoginPageState extends State<LoginPage> {
                   // Perform login logic here
                   try {
                     signInWithEmail(email, password);
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text('로그인 성공'),
-                    //   ),
-                    // );
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       ScaffoldMessenger.of(context).showSnackBar(

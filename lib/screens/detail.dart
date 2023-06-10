@@ -1,5 +1,3 @@
-// import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/screens/home.dart';
 import 'package:daypix/screens/login.dart';
@@ -126,7 +124,8 @@ class DetailPage extends StatelessWidget {
                     children: [
                       for (String label in items)
                         Padding(
-                          padding: EdgeInsets.all(4), // 위젯 사이 간격을 위해 Padding 추가
+                          padding: const EdgeInsets.all(
+                              4), // 위젯 사이 간격을 위해 Padding 추가
                           child: Text(
                             '#$label ',
                             style: const TextStyle(

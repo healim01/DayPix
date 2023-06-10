@@ -1,5 +1,4 @@
 import 'package:daypix/screens/map.dart';
-// import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daypix/screens/detail.dart';
 import 'package:daypix/utils/notification.dart';
@@ -9,12 +8,9 @@ import 'package:daypix/screens/wrt_pic.dart';
 import 'package:daypix/screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-// TODO : uid 로 firebase열기
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -258,7 +254,6 @@ class _HomePageState extends State<HomePage> {
                     // 오늘이 아니면서 오늘 이후일 경우
                     if ((!selectedDate!.isBefore(DateTime.now())) &&
                         calculateDifference(selectedDate!) != 0) {
-                      // if ((!selectedDate!.isBefore(DateTime.now()))) {
                       return Column(
                         children: [
                           const SizedBox(height: 50),
@@ -283,7 +278,6 @@ class _HomePageState extends State<HomePage> {
                           const Text(
                             '조금만 기다려주세요~',
                             style: TextStyle(
-                              // fontWeight: FontWeight.bold,
                               fontSize: 15,
                             ),
                           ),
@@ -351,7 +345,6 @@ class _HomePageState extends State<HomePage> {
                       );
                     }
                   } else {
-                    // final data = documents[0].data() as Map<String, dynamic>;
                     final DocumentSnapshot document = documents[0];
                     final data = document.data() as Map<String, dynamic>;
                     final String docID = document.id; // 문서의 ID
@@ -364,7 +357,6 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         InkWell(
                           onTap: () {
-                            // TODO: 수정 필요
                             print("detail page let's go~");
                             Navigator.push(
                               context,

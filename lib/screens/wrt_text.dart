@@ -6,7 +6,6 @@ import 'package:daypix/screens/login.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daypix/screens/detail.dart';
-// import 'package:daypix/location.dart';
 
 var isText = 0;
 String emoji = '';
@@ -31,7 +30,6 @@ class _WrtTextPageState extends State<WrtTextPage> {
         ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
       appBar: AppBar(
-        // title: Text(widget.date), // TODO : remove
         actions: [
           TextButton(
               onPressed: () async {
@@ -43,7 +41,6 @@ class _WrtTextPageState extends State<WrtTextPage> {
                   'emoji': emoji,
                 }).catchError((error) => print("Failed to add user: $error"));
 
-                // print(_textController.text);
                 if (!mounted) return;
                 Navigator.push(
                   context,
@@ -271,21 +268,6 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        // MaterialButton(
-                        //   onPressed: () {
-                        //     emoji = "sleepy";
-                        //   },
-                        //   child: SizedBox(
-                        //     child: Column(children: [
-                        //       Image.asset(
-                        //         'assets/emoji/sleepy.png',
-                        //         width: 50,
-                        //         fit: BoxFit.fill,
-                        //       ),
-                        //       const Text("Sleepy")
-                        //     ]),
-                        //   ),
-                        // ),
                         MaterialButton(
                           onPressed: () {
                             emoji = "think";
@@ -302,21 +284,6 @@ class Emoji extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        // MaterialButton(
-                        //   onPressed: () {
-                        //     emoji = "wink";
-                        //   },
-                        //   child: SizedBox(
-                        //     child: Column(children: [
-                        //       Image.asset(
-                        //         'assets/emoji/wink.png',
-                        //         width: 40,
-                        //         fit: BoxFit.fill,
-                        //       ),
-                        //       const Text("Wink")
-                        //     ]),
-                        //   ),
-                        // ),
                         MaterialButton(
                           onPressed: () {
                             emoji = "hungry";
